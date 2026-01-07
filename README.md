@@ -34,4 +34,13 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 
 3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2025/README.md 
 
-4.	материалов контрольных работ и тестов. 
+4.	материалов контрольных работ и тестов.
+
+
+литература:
+* https://github.com/FilippoMB/python-time-series-handbook / https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#
+* https://skforecast.org/0.19.1/examples/examples_english.html / https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html
+
+доп литература
+* https://clauswilke.com/dataviz/ 
+* 
