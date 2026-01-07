@@ -43,4 +43,4 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 
 доп литература
 * https://clauswilke.com/dataviz/ 
-* 
+* https://github.com/M-3LAB/awesome-industrial-anomaly-detection 
