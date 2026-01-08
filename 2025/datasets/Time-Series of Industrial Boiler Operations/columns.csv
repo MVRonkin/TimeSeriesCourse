@@ -1,0 +1,31 @@
+Variant,Attribute name,Description
+PT_8313A.AV_0,Upper furnace pressure (A)
+PT_8313B.AV_0,Upper furnace pressure (B)
+PT_8313C.AV_0,Upper furnace pressure (C)
+PT_8313D.AV_0,Upper furnace pressure (D)
+PT_8313E.AV_0,Upper furnace pressure (E)
+PT_8313F.AV_0,Upper furnace pressure (F)
+PTCA_8324.AV_0,Container outlet vapour pressure
+PTCA_8322A.AV_0,Pot pressure (left)
+TE_8319A.AV_0,Flue gas temperature at the upper economizer outlet (left)
+TE_8319B.AV_0,Flue gas temperature at the upper economizer outlet (right)
+TE_8313B.AV_0,Temperature in the upper part of the furnace chamber (right)
+TE_8303.AV_0,Primary air preheater outlet air temperature
+TE_8304.AV_0,Secondary air preheater outlet air temperature
+TE_8332A.AV_0,Boiler outlet steam temperature
+TV_8329ZC.AV_0,Primary desuperheater outlet steam temperature regulating valve
+FT_8301.AV_0,Primary fan outlet flow rate
+FT_8302.AV_0,Secondary fan outlet flow
+FT_8306A.AV_0,Return air chamber air flow (left)
+AIR_8301A.AV_0,Upper economiser inlet flue gas oxygen (left)
+FT_8306B.AV_0,Return air chamber air flow (right)
+AIR_8301B.AV_0,Upper economiser inlet flue gas oxygen (right)
+YFJ3_AI.AV_0,Induced draft fan motor current
+YFJ3_ZD1.AV_0,Vibration of induced draft fan bearing shell (A)
+YFJ3_ZD2.AV_0,Vibration of induced draft fan bearing shell (B)
+SXLTCYZ.AV_0,Differential pressure between upper and lower hearth (left)
+SXLTCYY.AV_0,Differential pressure between upper and lower hearth (right)
+ZCLCCY.AV_0,Differential pressure in the left layer
+YCLCCY.AV_0,Differential pressure in the right layer
+YJJWSLL.AV_0,Primary desuperheating water flow output
+ZZQBCHLL.AV_0,Main steam flow rate after compensation
