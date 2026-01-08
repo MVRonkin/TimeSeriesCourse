@@ -50,6 +50,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://rc2e.com/timeseriesanalysis
 * https://mlcourse.ai/book/topic09/topic9_part1_time_series_python.html
 * https://wesmckinney.com/book/time-series
+* https://jakevdp.github.io/PythonDataScienceHandbook/03.11-working-with-time-series.html
 
 Инструменты
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
