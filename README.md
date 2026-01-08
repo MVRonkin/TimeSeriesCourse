@@ -40,7 +40,23 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 литература:
 * https://github.com/FilippoMB/python-time-series-handbook / https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#
 * https://skforecast.org/0.19.1/examples/examples_english.html / https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html
+* Rob J Hyndman and George Athanasopoulos Forecasting: Principles and Practice (3rd ed)  https://otexts.com/fpp3/
+* Rob J Hyndman Forecasting: Principles and Practice, the Pythonic Way https://otexts.com/fpppy/
 
 доп литература
 * https://clauswilke.com/dataviz/ 
-* https://github.com/M-3LAB/awesome-industrial-anomaly-detection 
+* https://github.com/M-3LAB/awesome-industrial-anomaly-detection
+* https://nicolarighetti.github.io/Time-Series-Analysis-With-R/
+* https://rc2e.com/timeseriesanalysis
+* https://mlcourse.ai/book/topic09/topic9_part1_time_series_python.html
+* https://wesmckinney.com/book/time-series
+
+Инструменты
+* https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
+* https://www.sktime.net/en/stable/
+* https://skforecast.org/
+* https://nixtlaverse.nixtla.io/statsforecast/index.html /https://github.com/Nixtla/statsforecast
+* https://www.statsmodels.org/stable/tsa.html / https://www.statsmodels.org/stable/user-guide.html#time-series-analysis
+* https://unit8co.github.io/darts/
+* 
+* 
