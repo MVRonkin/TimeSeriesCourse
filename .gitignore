@@ -74,3 +74,10 @@
 2025/WS/.ipynb_checkpoints/01 Моделирование временных рядов-checkpoint.ipynb
 2025/WS/.ipynb_checkpoints/01 - Визуализация и предварительная работа с данными -checkpoint.ipynb
 2025/datasets/pump_sensor_data/sensor.csv
+2025/datasets/OPDS/time_series_15min_singleindex.csv
+2025/datasets/OPDS/time_series_30min_singleindex.csv
+2025/datasets/OPDS/time_series_60min_singleindex.csv
+2025/datasets/OPDS/weather_data.csv
+2025/datasets/OPDS/.ipynb_checkpoints/read_the_data-checkpoint.ipynb
+2025/datasets/OPDS/.ipynb_checkpoints/Untitled-checkpoint.ipynb
+2025/datasets/Solar Power Plant/.ipynb_checkpoints/eda-condition-monitoring-solar-power-plant-checkpoint.ipynb
