@@ -51,6 +51,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://mlcourse.ai/book/topic09/topic9_part1_time_series_python.html
 * https://wesmckinney.com/book/time-series
 * https://jakevdp.github.io/PythonDataScienceHandbook/03.11-working-with-time-series.html
+* Time Series with Deep Learning Quick https://dl.leima.is/time-series/t
 
 Инструменты
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
