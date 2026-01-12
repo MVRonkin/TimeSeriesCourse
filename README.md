@@ -51,14 +51,27 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://mlcourse.ai/book/topic09/topic9_part1_time_series_python.html
 * https://wesmckinney.com/book/time-series
 * https://jakevdp.github.io/PythonDataScienceHandbook/03.11-working-with-time-series.html
-* Time Series with Deep Learning Quick https://dl.leima.is/time-series/t
+* Time Series with Deep Learning Quick https://dl.leima.is/time-series/
+* https://github.com/aeon-toolkit/aeon-tutorials/tree/main
+* https://github.com/sktime/python_brasil_2025
+* https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 
-Инструменты
-* https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
+Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
 * https://skforecast.org/
 * https://nixtlaverse.nixtla.io/statsforecast/index.html /https://github.com/Nixtla/statsforecast
 * https://www.statsmodels.org/stable/tsa.html / https://www.statsmodels.org/stable/user-guide.html#time-series-analysis
 * https://unit8co.github.io/darts/
-* 
+
+Инструменты TSC
+* https://aeon-toolkit.org/
+* https://timeseriesai.github.io/tsai/
+* https://tsfel.readthedocs.io/
+* https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
+  
+Тутроиалы
+* https://github.com/aeon-toolkit/aeon-tutorials/tree/main
+* https://github.com/sktime/python_brasil_2025 
+* https://github.com/sktime/sktime-workshop-pycon-colombia-2025/tree/main/notebooks
+* https://github.com/Nixtla/blog/
 * 
