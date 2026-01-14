@@ -1,0 +1,4 @@
+outs:
+- md5: 81542d520f7b96d00582796aedcfb718
+  size: 1744702
+  path: tourism.csv
