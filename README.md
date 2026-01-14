@@ -55,6 +55,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
+* https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
 
 Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
@@ -78,4 +79,4 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://github.com/sktime/python_brasil_2025 
 * https://github.com/sktime/sktime-workshop-pycon-colombia-2025/tree/main/notebooks
 * https://github.com/Nixtla/blog/
-* 
+* https://github.com/Nixtla/fpp3-python
