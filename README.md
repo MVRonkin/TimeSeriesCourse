@@ -56,6 +56,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://github.com/sktime/python_brasil_2025
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
+* https://github.com/aromanenko/ATSF/tree/main
 
 Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
