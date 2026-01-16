@@ -54,9 +54,15 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * Time Series with Deep Learning Quick https://dl.leima.is/time-series/
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025
+
+Какие то курсы
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
 * https://github.com/aromanenko/ATSF/tree/main
+* https://github.com/gheisenberg/TSF
+* https://github.com/datons/TS/tree/
+* https://github.com/oscar-defelice/TimeSeries-lectures
+* https://github.com/j-adamczyk/ml_time_series_forecasting_course/b
 
 Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
