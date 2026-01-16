@@ -77,6 +77,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://timeseriesai.github.io/tsai/
 * https://tsfel.readthedocs.io/
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
+* https://github.com/valeman/awesome-conformal-prediction
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
