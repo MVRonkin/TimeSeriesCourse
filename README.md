@@ -62,7 +62,8 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://github.com/gheisenberg/TSF
 * https://github.com/datons/TS/tree/
 * https://github.com/oscar-defelice/TimeSeries-lectures
-* https://github.com/j-adamczyk/ml_time_series_forecasting_course/b
+* https://github.com/j-adamczyk/ml_time_series_forecasting_course/
+* https://github.com/trainindata/feature-engineering-for-time-series-forecasting/
 
 Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
