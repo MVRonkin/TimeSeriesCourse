@@ -54,8 +54,16 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * Time Series with Deep Learning Quick https://dl.leima.is/time-series/
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025
+
+Какие то курсы
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
+* https://github.com/aromanenko/ATSF/tree/main
+* https://github.com/gheisenberg/TSF
+* https://github.com/datons/TS/tree/
+* https://github.com/oscar-defelice/TimeSeries-lectures
+* https://github.com/j-adamczyk/ml_time_series_forecasting_course/
+* https://github.com/trainindata/feature-engineering-for-time-series-forecasting/
 
 Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
@@ -69,6 +77,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://timeseriesai.github.io/tsai/
 * https://tsfel.readthedocs.io/
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
+* https://github.com/valeman/awesome-conformal-prediction
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/

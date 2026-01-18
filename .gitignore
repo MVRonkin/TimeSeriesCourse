@@ -86,11 +86,18 @@
 2025/WS/.ipynb_checkpoints/04 - Advanced forecasting-Copy1-checkpoint.ipynb
 2024/WS/.ipynb_checkpoints/Юнит 17 - advanced forecasting-checkpoint.ipynb
 2025/WS/.ipynb_checkpoints/04 - Advanced forecasting-checkpoint.ipynb
+<<<<<<< Updated upstream
 2025/old/.ipynb_checkpoints/05 -1 ML forecast-checkpoint.ipynb
-2025/old/fpp-in-python-master/.dvcignore
-2025/old/fpp-in-python-master/.python-version
-2025/old/fpp-in-python-master/.vscode/launch.json
-2025/old/fpp-in-python-master/src/notebooks/chapters/.ipynb_checkpoints/chapter-10-checkpoint.ipynb
-2025/old/fpp-in-python-master/src/notebooks/chapters/.ipynb_checkpoints/chapter-4-5-checkpoint.ipynb
-2025/old/fpp-in-python-master/src/notebooks/chapters/.ipynb_checkpoints/chapter-7-checkpoint.ipynb
-2025/old/fpp-in-python-master/src/notebooks/chapters/.ipynb_checkpoints/chapter-9-checkpoint.ipynb
+=======
+>>>>>>> Stashed changes
+2025/WS/.ipynb_checkpoints/02 - StatForecast_Intro-checkpoint.ipynb
+2025/WS/.ipynb_checkpoints/05 - ML forecast-checkpoint.ipynb
+2025/WS/.ipynb_checkpoints/de_hourly_power_and_weather-checkpoint.csv
+2025/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
+2025/WS/.ipynb_checkpoints/03 - StatForecast_DSModels_ResAnalysis-checkpoint.ipynb
+2025/WS/1.3.2
+2024/WS/.ipynb_checkpoints/Юнит 14 - SKTime_ARIMA-checkpoint.ipynb
+2025/WS/.ipynb_checkpoints/03 - StatForecast_DSModels(ARIMA)-checkpoint.ipynb
+2025/WS/.ipynb_checkpoints/04 - StatForecast_ResAnalysis-checkpoint.ipynb
+anaconda_projects/db/project_filebrowser.db
+2025/WS/.ipynb_checkpoints/04 -SKTime Probability and CV in Advanced forecasting-checkpoint.ipynb
