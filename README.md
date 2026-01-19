@@ -81,7 +81,9 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
-* 
+* https://github.com/agpenas/tstrends
+
+* https://github.com/thekimk/All-About-Time-Series-Analysis/
 
 Тутроиалы
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
