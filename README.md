@@ -1,5 +1,5 @@
 Материалы курса представлены в репозитории 
-https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025 
+https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026 
 Материалы состоят 
 
 1.	из лекционных презентаций по следующим темам <ul>
@@ -21,10 +21,10 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 <li>1.16.	Задачи непараметрического анализа слжных ВР (доп. Раздел).</li>
 </ul>
 2.	материалов практик в формате ipynb по следующим темам <ul>
-<li>2.1.	Моделирование ВР</li>
-<li>2.2.	Визуализация  и предварительный анализ ВР</li>
-<li>2.3.	Фреймворки для решения задач предсказания ВР</li>
-<li>2.4.	Методы авторегрессии-скользящего среднего</li>
+<li>2.1.	Визуализация  и предварительный анализ ВР</li>
+<li>2.2.	Фреймворки для решения задач предсказания ВР</li>
+<li>2.3.	Методы авторегрессии-скользящего среднего</li>
+<li>2.4.	Оценка качеста предсказаний ВР</li>
 <li>2.5.	Продвинутые техники использования фреймворков в задачах предсказания ВР</li>
 <li>2.6.	Использование методов машинного обучения в задачах предсказания ВР</li>
 <li>2.7.	Использование методов глубоких нейронных сетей в задачах предсказания ВР</li>
@@ -32,25 +32,33 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 <li>2.9.	Решение задач классификации ВР (доп. Раздел).</li>
 </ul>
 
-3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2025/README.md 
+3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md 
 
 4.	материалов контрольных работ и тестов.
 
 
 литература:
-* https://github.com/FilippoMB/python-time-series-handbook / https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#
-* https://skforecast.org/0.19.1/examples/examples_english.html / https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html
-* Rob J Hyndman and George Athanasopoulos Forecasting: Principles and Practice (3rd ed)  https://otexts.com/fpp3/
-* Rob J Hyndman Forecasting: Principles and Practice, the Pythonic Way https://otexts.com/fpppy/
+* [Rob J H Forecasting: Principles and Practice, the Pythonic Way](https://otexts.com/fpppy/) - основной учебник
+* [Rob J H and G Athanasopoulos Forecasting: Principles and Practice (3rd ed)](https://otexts.com/fpp3/) - расширенное описание глав, посвященных класическому АВР
+* [Nixtla statsforecas](https://nixtlaverse.nixtla.io/statsforecast/index.html) и  [GitHub документация](https://github.com/Nixtla/statsforecast/tree/main/nbs/docs) - основной фреймворк по классике, [GitHub docs2](https://github.com/Nixtla/statsforecast/tree/main/docs), [GitHub Experiments](https://github.com/Nixtla/statsforecast/tree/main/experiments)
+* [Nixtla mlforecast](https://nixtlaverse.nixtla.io/mlforecast/index.html) и [GitHub docs](https://github.com/Nixtla/mlforecast/tree/main/nbs/docs) и [GitHub docs2](https://github.com/Nixtla/mlforecast/tree/main/docs) 
+* [Nixtla neuralforecast](https://nixtlaverse.nixtla.io/neuralforecast) и [GitHub docs](https://github.com/Nixtla/neuralforecast/tree/main/nbs/docs), [GitHub docs2](https://github.com/Nixtla/neuralforecast/tree/main/docs) and [GitHub Experiments](https://github.com/Nixtla/neuralforecast/tree/main/experiments)
+* [Nixtla blog github](https://github.com/Nixtla/nixtla_blog_examples/tree/main) и [тут](https://github.com/Nixtla/transfer-learning-time-series/tree/main/nbs)
+основная доп литература 
+* [Bianchi F M Time series analysis with Python](https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#) [GitHub](https://github.com/FilippoMB/python-time-series-handbook / ) -  простое Pythonic Way  изложение классического моделирования ВР
+* [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) - полезное и хорошее описание примеров предсказания ВР
+* [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 
-доп литература
+
+доп литература 
+* [Forecasting and Analytics with the Augmented Dynamic Adaptive Model (ADAM)](https://openforecast.org/adam/)
 * https://clauswilke.com/dataviz/ 
 * https://github.com/M-3LAB/awesome-industrial-anomaly-detection
 * https://nicolarighetti.github.io/Time-Series-Analysis-With-R/
 * https://rc2e.com/timeseriesanalysis
 * https://mlcourse.ai/book/topic09/topic9_part1_time_series_python.html
 * https://wesmckinney.com/book/time-series
-* https://jakevdp.github.io/PythonDataScienceHandbook/03.11-working-with-time-series.html
+* https://jakevdp.github.io/PythoмnDataScienceHandbook/03.11-working-with-time-series.html
 * Time Series with Deep Learning Quick https://dl.leima.is/time-series/
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025
@@ -71,6 +79,9 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://nixtlaverse.nixtla.io/statsforecast/index.html /https://github.com/Nixtla/statsforecast
 * https://www.statsmodels.org/stable/tsa.html / https://www.statsmodels.org/stable/user-guide.html#time-series-analysis
 * https://unit8co.github.io/darts/
+* https://lavinei.github.io/pybats/
+
+* [25 years of open source forecasting software 2025](https://robjhyndman.com/seminars/osfs25.html)
 
 Инструменты TSC
 * https://aeon-toolkit.org/
@@ -78,6 +89,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://tsfel.readthedocs.io/
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
 * https://github.com/valeman/awesome-conformal-prediction
+
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
@@ -91,3 +103,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2025
 * https://github.com/sktime/sktime-workshop-pycon-colombia-2025/tree/main/notebooks
 * https://github.com/Nixtla/blog/
 * https://github.com/Nixtla/fpp3-python
+* https://www.pymc-labs.com/blog-posts/probabilistic-forecasting
+* https://www.pymc.io/projects/docs/en/latest/api/distributions/timeseries.html
+* https://juanitorduz.github.io/short_time_series_pymc/
+* https://neuralprophet.com/tutorials/index.html
