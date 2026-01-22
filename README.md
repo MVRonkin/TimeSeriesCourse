@@ -44,7 +44,10 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [Nixtla mlforecast](https://nixtlaverse.nixtla.io/mlforecast/index.html) и [GitHub docs](https://github.com/Nixtla/mlforecast/tree/main/nbs/docs) и [GitHub docs2](https://github.com/Nixtla/mlforecast/tree/main/docs) 
 * [Nixtla neuralforecast](https://nixtlaverse.nixtla.io/neuralforecast) и [GitHub docs](https://github.com/Nixtla/neuralforecast/tree/main/nbs/docs), [GitHub docs2](https://github.com/Nixtla/neuralforecast/tree/main/docs) and [GitHub Experiments](https://github.com/Nixtla/neuralforecast/tree/main/experiments)
 * [Nixtla blog github](https://github.com/Nixtla/nixtla_blog_examples/tree/main) и [тут](https://github.com/Nixtla/transfer-learning-time-series/tree/main/nbs)
-основная доп литература 
+* [Blog ODS TSA](https://habr.com/ru/companies/ods/articles/327242/), [GitHub Ru](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_russian/topic09_time_series), [GitHub En](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_english/topic09_time_series)
+* [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
+
+Основная доп литература 
 * [Bianchi F M Time series analysis with Python](https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#) [GitHub](https://github.com/FilippoMB/python-time-series-handbook / ) -  простое Pythonic Way  изложение классического моделирования ВР
 * [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) - полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
@@ -62,6 +65,8 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * Time Series with Deep Learning Quick https://dl.leima.is/time-series/
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025
+* https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
+* http://www.stat.ucla.edu/~frederic/415/S23/tsa4.pdf
 
 Какие то курсы
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
@@ -89,6 +94,8 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://tsfel.readthedocs.io/
 * https://github.com/predict-idlab/tsflex / https://predict-idlab.github.io/tsflex/
 * https://github.com/valeman/awesome-conformal-prediction
+* https://github.com/thuml/Time-Series-Library
+* https://github.com/ritvikmath/Time-Series-Analysis
 
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
