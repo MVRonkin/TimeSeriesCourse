@@ -338,65 +338,6 @@ def ensemble_weights_from_metrics(
         return {name: w / total for name, w in inv_scores.items()}
 
 
-def metric_weighted_ensemble(
-    forecasts_df: pd.DataFrame,
-    metrics_df: pd.DataFrame,
-    model_names: list,
-    levels: list,
-    metric_name: str,
-    epsilon: float = 1e-8,
-    ensemble_name: str = "Ensemble",
-    return_weights: bool = False
-):
-    """
-    Возвращает либо DataFrame с ансамблевыми прогнозами, 
-    либо кортеж (forecast_df, weights_dict), если return_weights=True.
-    """
-    # Извлекаем средние значения метрики по моделям
-    metric_row = metrics_df[metrics_df['metric'] == metric_name]
-    if metric_row.empty:
-        raise ValueError(f"Метрика '{metric_name}' не найдена")
-    
-    mean_scores = metric_row.drop(columns=['metric', 'unique_id']).mean(axis=0)
-    
-    for name in model_names:
-        if name not in mean_scores:
-            raise KeyError(f"Модель '{name}' отсутствует в метрике '{metric_name}'")
-    
-    # Веса
-    scores = mean_scores[model_names].values
-    weights = 1.0 / (scores + epsilon)
-    weights /= weights.sum()
-    weight_dict = dict(zip(model_names, weights))
-    
-    # === Строим ансамбль ===
-    result = forecasts_df[['unique_id', 'ds']].copy()
-    
-    point_cols = [name for name in model_names if name in forecasts_df.columns]
-    if point_cols:
-        result[ensemble_name] = sum(weight_dict[name] * forecasts_df[name] for name in point_cols)
-    
-    for level in levels:
-        lo_cols = [f"{name}-lo-{level}" for name in model_names 
-                   if f"{name}-lo-{level}" in forecasts_df.columns]
-        hi_cols = [f"{name}-hi-{level}" for name in model_names 
-                   if f"{name}-hi-{level}" in forecasts_df.columns]
-        if lo_cols:
-            result[f'{ensemble_name}-lo-{level}'] = sum(
-                weight_dict[name] * forecasts_df[f"{name}-lo-{level}"]
-                for name in model_names if f"{name}-lo-{level}" in forecasts_df.columns
-            )
-        if hi_cols:
-            result[f'{ensemble_name}-hi-{level}'] = sum(
-                weight_dict[name] * forecasts_df[f"{name}-hi-{level}"]
-                for name in model_names if f"{name}-hi-{level}" in forecasts_df.columns
-            )
-    
-    if return_weights:
-        return result, weight_dict
-    else:
-        return result
-
 def quantile_ensemble_forecast(
     eval_df: pd.DataFrame,
     model_names: list,
