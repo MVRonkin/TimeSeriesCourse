@@ -26,7 +26,7 @@ if TYPE_CHECKING:
 from typing import Optional, List, Dict, Union, Tuple
 from utilsforecast.plotting import plot_series as uf_plot_series   
 
-def plt_style_GOST():
+def plt_style_GOST(fig_size = (12, 2.0)):
     plt.rcParams.update({
         # ШРИФТ
         "font.family": "serif",
@@ -43,7 +43,7 @@ def plt_style_GOST():
     
         # РАЗМЕР ФИГУРЫ (A4, отчёты)
         # "figure.figsize": (6.5, 4.0),         # ~16.5 × 10 см
-        "figure.figsize": (12, 3.0),         
+        "figure.figsize": fig_size,         
         "figure.dpi": 150,
         "savefig.dpi": 300,
     
@@ -71,32 +71,6 @@ def plt_style_GOST():
     })
 
 
-def get_aliases(df: pd.DataFrame, base_cols: list = ['unique_id', 'ds', 'y'] ) -> list:
-    """
-    Извлекает список имён моделей из прогнозного DataFrame.
-    
-    Удаляет:
-      - служебные колонки: 'unique_id', 'ds', 'y'
-      - квантильные колонки: '*-lo-*', '*-hi-*'
-    
-    Возвращает уникальные базовые имена моделей.
-    """
-    # Все колонки
-    cols = set(df.columns)
-    
-    # Удаляем служебные
-    cols -= set(base_cols)
-    
-    # Удаляем квантильные (оставляем только базовые имена)
-    model_names = set()
-    for col in cols:
-        if '-lo-' in col or '-hi-' in col:
-            continue
-        model_names.add(col)
-    
-    return sorted(model_names)
-    
-
 def plot_series_v2(
     df: Optional[pd.DataFrame] = None,
     forecasts_df: Optional[pd.DataFrame] = None,
@@ -115,19 +89,21 @@ def plot_series_v2(
     seed: int = 0,
     resampler_kwargs: Optional[Dict] = None,
     ax: Optional[Union[plt.Axes, np.ndarray, "plotly.graph_objects.Figure"]] = None,
-    figsize_per_plot: Tuple[float, float] = (12, 2),  # ← НОВОЕ!
+    figsize_per_plot: Tuple[float, float] = (12, 2),
+    n_cols: int = 1,  # ← НОВЫЙ ПАРАМЕТР
 ):
     """
-    Обёртка над utilsforecast.plotting.plot_series с предварительным отбором временных рядов
-    и поддержкой настраиваемого размера каждого графика.
+    Обёртка над utilsforecast.plotting.plot_series с предварительным отбором временных рядов,
+    поддержкой настраиваемого размера каждого графика и мультиколоночной сетки.
     
     Параметры:
         ...
         figsize_per_plot: (width, height) — размер одного подграфика в дюймах.
+        n_cols: int = 1 — количество столбцов в сетке подграфиков, если -1 то все ВР 
         ...
     """
     if engine != "matplotlib":
-        # Для plotly figsize не применяется — передаём как есть
+        # Для plotly сетка и figsize не управляются здесь — передаём как есть
         return uf_plot_series(
             df=df, forecasts_df=forecasts_df, models=models, level=level,
             max_insample_length=max_insample_length, plot_anomalies=plot_anomalies,
@@ -167,7 +143,7 @@ def plot_series_v2(
 
     n_plots = len(selected_ids)
 
-    # Если пользователь передал ax — используем его (игнорируем figsize_per_plot)
+    # Если пользователь передал ax — используем его (игнорируем сетку и figsize_per_plot)
     if ax is not None:
         return uf_plot_series(
             df=df_filtered, forecasts_df=forecasts_filtered, models=models, level=level,
@@ -176,18 +152,29 @@ def plot_series_v2(
             target_col=target_col, resampler_kwargs=resampler_kwargs, ax=ax
         )
 
+    # === Расчёт сетки ===
+    if n_cols == -1:
+        n_cols, n_rows = n_plots, 1
+    else:
+        n_cols = min(n_cols, n_plots)  # избегаем избыточных столбцов
+        n_rows = (n_plots + n_cols - 1) // n_cols  # ceil division
+
     # === Создаём фигуру с нужным размером ===
     width, height = figsize_per_plot
     fig, axes = plt.subplots(
-        nrows=n_plots,
-        ncols=1,
-        figsize=(width, height * n_plots),
+        nrows=n_rows,
+        ncols=n_cols,
+        figsize=(width * n_cols, height * n_rows),
         sharex=True,
-        squeeze=False  # всегда возвращает массив
+        squeeze=False  # всегда возвращает 2D массив
     )
     axes = axes.flatten()
 
-    # Вызываем оригинальную функцию с нашими осями
+    # Скрываем неиспользуемые оси при неполной сетке
+    for idx in range(n_plots, len(axes)):
+        axes[idx].set_visible(False)
+
+    # Вызываем оригинальную функцию с подготовленными осями
     return uf_plot_series(
         df=df_filtered,
         forecasts_df=forecasts_filtered,
@@ -201,7 +188,7 @@ def plot_series_v2(
         time_col=time_col,
         target_col=target_col,
         resampler_kwargs=resampler_kwargs,
-        ax=axes,
+        ax=axes[:n_plots],  # передаём только нужные оси
     )
 
 

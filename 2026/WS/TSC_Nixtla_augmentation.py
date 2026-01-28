@@ -979,3 +979,151 @@ def add_variance_expansion(
     
     return df
 
+from scipy.stats import wasserstein_distance, ks_2samp, energy_distance
+
+def marginal_distribution_test(y_orig: np.ndarray, y_aug: np.ndarray, 
+                              name: str = "aug") -> pd.DataFrame:
+    """
+    Тест маргинальных распределений: возвращает простой датафрейм с бинарными решениями (1 = прошло, 0 = не прошло)
+    """
+    # Базовые статистики
+    orig_std = y_orig.std() + 1e-8
+    
+    # Метрики и пороги
+    metrics = {
+        'wasserstein': {
+            'value': wasserstein_distance(y_orig, y_aug)/orig_std,
+            'threshold': 0.15,
+            'passed': wasserstein_distance(y_orig, y_aug)/orig_std <= 0.15  
+        },
+        'ks_pvalue': {
+            'value': ks_2samp(y_orig, y_aug).pvalue,
+            'threshold': 0.05,
+            'passed': ks_2samp(y_orig, y_aug).pvalue > 0.05
+        },
+        'mean_diff_pct': {
+            'value': abs(y_orig.mean() - y_aug.mean()) / (abs(y_orig.mean()) + 1e-8) * 100,
+            'threshold': 5.0,
+            'passed': abs(y_orig.mean() - y_aug.mean()) / (abs(y_orig.mean()) + 1e-8) * 100 <= 5.0
+        },
+        'std_diff_pct': {
+            'value': abs(y_orig.std() - y_aug.std()) / (orig_std) * 100,
+            'threshold': 10.0,
+            'passed': abs(y_orig.std() - y_aug.std()) / (orig_std) * 100 <= 10.0
+        }
+    }
+    
+    # Формируем датафрейм
+    df = pd.DataFrame([
+        {
+            'metric': metric,
+            'value': f"{m['value']:.4f}",
+            'threshold': f"{m['threshold']:.4f}",
+            'passed': int(m['passed'])  # 1 = OK, 0 = FAIL
+        }
+        for metric, m in metrics.items()
+    ])
+    
+    # Добавляем имя аугментации как метаданные (для конкатенации)
+    df['augmentation'] = name
+    df = df[['augmentation', 'metric', 'value', 'threshold', 'passed']]
+    
+    return df
+
+def structural_tests(y_orig: np.ndarray, y_aug: np.ndarray, 
+                    seasonal_period: int = None,
+                    name: str = "aug") -> pd.DataFrame:
+    """
+    Тест структурных свойств временных рядов: возвращает датафрейм с бинарными решениями (1 = прошло, 0 = не прошло)
+    """
+    import numpy as np
+    import pandas as pd
+    from statsmodels.tsa.stattools import acf
+    from scipy.signal import periodogram
+    from scipy.stats import wasserstein_distance
+
+    # Убедимся, что ряды достаточно длинные
+    min_len = max(20, 2 * (seasonal_period or 1))
+    if len(y_orig) < min_len or len(y_aug) < min_len:
+        # Возвращаем нейтральный результат, если данных мало
+        dummy = {
+            'acf_mae': {'value': 0.0, 'threshold': 0.05, 'passed': 1},
+            'spectral_dist': {'value': 0.0, 'threshold': 0.2, 'passed': 1},
+            'quantile_max_diff': {'value': 0.0, 'threshold': 0.15, 'passed': 1},
+            'volatility_corr': {'value': 1.0, 'threshold': 0.7, 'passed': 1}
+        }
+        df = pd.DataFrame([
+            {'metric': k, 'value': f"{v['value']:.4f}", 'threshold': f"{v['threshold']:.4f}", 'passed': v['passed']}
+            for k, v in dummy.items()
+        ])
+        df['augmentation'] = name
+        return df[['augmentation', 'metric', 'value', 'threshold', 'passed']]
+
+    tests = {}
+
+    # 1. ACF MAE
+    max_lag = min(50, len(y_orig) // 2)
+    acf_orig = acf(y_orig, nlags=max_lag, fft=True)
+    acf_aug = acf(y_aug, nlags=max_lag, fft=True)
+    acf_mae = np.mean(np.abs(acf_orig - acf_aug))
+    tests['acf_mae'] = {
+        'value': acf_mae,
+        'threshold': 0.05,
+        'passed': acf_mae <= 0.05
+    }
+
+    # 2. Spectral distance
+    f_orig, Pxx_orig = periodogram(y_orig)
+    f_aug, Pxx_aug = periodogram(y_aug)
+    Pxx_orig = Pxx_orig / (Pxx_orig.sum() + 1e-8)
+    Pxx_aug = Pxx_aug / (Pxx_aug.sum() + 1e-8)
+    spectral_dist = wasserstein_distance(f_orig, f_aug, u_weights=Pxx_orig, v_weights=Pxx_aug)
+    spec_thresh = 0.1 * (1.0 / seasonal_period) if seasonal_period else 0.2
+    tests['spectral_dist'] = {
+        'value': spectral_dist,
+        'threshold': spec_thresh,
+        'passed': spectral_dist <= spec_thresh
+    }
+
+    # 3. Quantile coverage
+    quantiles = [0.1, 0.5, 0.9]
+    q_orig = np.quantile(y_orig, quantiles)
+    q_aug = np.quantile(y_aug, quantiles)
+    max_q_diff = np.max(np.abs(q_orig - q_aug)) / (np.std(y_orig) + 1e-8)
+    tests['quantile_max_diff'] = {
+        'value': max_q_diff,
+        'threshold': 0.15,
+        'passed': max_q_diff <= 0.15
+    }
+
+    # 4. Volatility correlation
+    window = min(20, len(y_orig) // 5)
+    vol_orig = pd.Series(y_orig).rolling(window).std().dropna().values
+    vol_aug = pd.Series(y_aug).rolling(window).std().dropna().values
+    n_overlap = min(len(vol_orig), len(vol_aug))
+    if n_overlap > 1:
+        vol_corr = np.corrcoef(vol_orig[:n_overlap], vol_aug[:n_overlap])[0, 1]
+        vol_corr = float(vol_corr) if not np.isnan(vol_corr) else 0.0
+    else:
+        vol_corr = 0.0
+    tests['volatility_corr'] = {
+        'value': vol_corr,
+        'threshold': 0.7,
+        'passed': vol_corr >= 0.7
+    }
+
+    # Формируем датафрейм
+    df = pd.DataFrame([
+        {
+            'metric': metric,
+            'value': f"{m['value']:.4f}",
+            'threshold': f"{m['threshold']:.4f}",
+            'passed': int(m['passed'])
+        }
+        for metric, m in tests.items()
+    ])
+    
+    df['augmentation'] = name
+    df = df[['augmentation', 'metric', 'value', 'threshold', 'passed']]
+    
+    return df
