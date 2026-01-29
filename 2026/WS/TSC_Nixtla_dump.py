@@ -26,6 +26,19 @@ if TYPE_CHECKING:
 from typing import Optional, List, Dict, Union, Tuple
 from utilsforecast.plotting import plot_series as uf_plot_series   
 
+import re
+
+def extract_model_names(df, base_cols=['unique_id', 'ds', 'y', 'cutoff']):
+    """
+    Извлекает уникальные названия моделей из колонок DataFrame.
+    Удаляет суффиксы: -lo-90, -hi-95, _lo_90, _hi_95 и т.п.
+    """
+    base_cols = set(['unique_id', 'ds', 'y', 'cutoff']) if base_cols is None else set(base_cols)
+    cols = [c for c in df.columns if c not in base_cols]
+    models = {re.sub(r'[-_](lo|hi)[-_]\d+$', '', c) for c in cols}
+    return sorted(list(models - set(base_cols)))
+    
+
 def plt_style_GOST(fig_size = (12, 2.0)):
     plt.rcParams.update({
         # ШРИФТ
@@ -193,7 +206,108 @@ def plot_series_v2(
 
 
  
-
+def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None, model_names=None, plot=True):
+    """
+    Универсальная оценка и визуализация прогнозов.
+    
+    Автоматически определяет:
+      - Если переданы чистые прогнозы (без колонки 'y') → делает merge с df_test
+      - Если передан смерженный датафрейм (с колонкой 'y') → использует как есть
+    
+    Параметры
+    ----------
+    df_train : pd.DataFrame
+        Тренировочные данные
+    df_test : pd.DataFrame
+        Тестовые данные (должны содержать 'y')
+    forecasts_or_eval : pd.DataFrame
+        Либо чистые прогнозы (без 'y'), либо уже смерженный датафрейм (с 'y')
+    metrics : list
+        Список метрик из utilsforecast
+    levels : list, optional
+        Уровни интервалов для оценки (требуют наличия колонок -lo-/-hi-)
+    model_names : list, optional
+        Явный список моделей. Если None — извлекаются автоматически.
+    plot : bool, default=True
+        Рисовать ли графики
+    
+    Возвращает
+    ----------
+    eval_df : pd.DataFrame
+        Смерженный датафрейм с прогнозами и фактом
+    metrics_df : pd.DataFrame
+        Таблица метрик
+    """
+    # === Определяем тип входа ===
+    has_y = 'y' in forecasts_or_eval.columns
+    has_uid_ds = {'unique_id', 'ds'}.issubset(forecasts_or_eval.columns)
+    
+    if has_y and has_uid_ds:
+        # Уже смерженный датафрейм (содержит 'y')
+        eval_df = forecasts_or_eval.copy()
+    elif has_uid_ds:
+        # Чистые прогнозы (нет 'y') — мержим с тестом
+        eval_df = df_test[['unique_id', 'ds', 'y']].merge(
+            forecasts_or_eval,
+            on=['unique_id', 'ds'],
+            how='inner'
+        )
+    else:
+        raise ValueError("Input must contain ['unique_id', 'ds'] columns. "
+                        "If it also contains 'y' — treated as eval_df, "
+                        "otherwise as forecasts.")
+    
+    # === Извлекаем имена моделей ===
+    if model_names is None:
+        # Исключаем ВСЕ служебные колонки, включая дубликаты после мержа
+        base_cols = ['unique_id', 'ds', 'y', 'cutoff', 'index']
+        model_names = extract_model_names(eval_df, base_cols=base_cols)
+    
+    if not model_names:
+        raise ValueError("No forecast models detected. Check input DataFrame columns.")
+    
+    # === Проверяем наличие интервалов для запрошенных уровней ===
+    eval_level = levels
+    if levels is not None:
+        missing_intervals = []
+        for m in model_names:
+            for lvl in levels:
+                for suffix in ['lo', 'hi']:
+                    col = f'{m}-{suffix}-{lvl}'
+                    if col not in eval_df.columns:
+                        missing_intervals.append(col)
+        
+        if missing_intervals:
+            print(f" Warning: Missing interval columns for level={levels}. "
+                  f"Evaluating point metrics only. Missing: {missing_intervals[:3]}...")
+            eval_level = None  # отключаем интервалы для оценки метрик
+    
+    # === Оценка метрик ===
+    metrics_df = evaluate(
+        df=eval_df,
+        metrics=metrics,
+        models=model_names,  # ← критически важно указать явно!
+        train_df=df_train,
+        level=eval_level,
+    ).pivot(
+        index='metric',
+        columns='unique_id',
+        values=model_names
+    )
+    display(metrics_df.style.format('{:.2f}'))
+    
+    # === Визуализация ===
+    if plot:
+        display(plot_series_v2(
+            df_train,
+            forecasts_df=eval_df,
+            level=levels,       
+            models=model_names,
+            palette='Set1',
+        ))
+    
+    # return eval_df, metrics_df
+        
 
 def vanilla_ensemble(
     forecasts_df: pd.DataFrame,
@@ -398,3 +512,7 @@ def quantile_ensemble_forecast(
             result[f'QEnsemble-hi-{level}'] = sum(w * eval_df[col] for w, col in zip(weights_hi, hi_cols))
     
     return result
+
+
+
+

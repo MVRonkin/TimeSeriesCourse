@@ -167,9 +167,6 @@ def add_structural_shift_by_iqr(
     
     return df
 
-    
-
-
 
 def add_additive_shock(
     df,
