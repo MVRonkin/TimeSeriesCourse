@@ -116,4 +116,5 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.pymc.io/projects/docs/en/latest/api/distributions/timeseries.html
 * https://juanitorduz.github.io/short_time_series_pymc/
 * https://neuralprophet.com/tutorials/index.html
-* https://skforecast.org/0.19.1/examples/examples_english.html 
+* https://skforecast.org/0.19.1/examples/examples_english.html
+* https://readmedium.com/bayesian-time-series-forecasting-in-python-with-the-ubers-orbit-package-1d3b7ff482dd
