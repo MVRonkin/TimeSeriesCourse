@@ -68,6 +68,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/sktime/python_brasil_2025
 * https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
 * http://www.stat.ucla.edu/~frederic/415/S23/tsa4.pdf
+* https://www.kaggle.com/code/konradb/ts-0-the-basics
 
 Какие то курсы
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
