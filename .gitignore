@@ -143,3 +143,12 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/.ipynb_checkpoints/cv_nixtla-checkpoint.py
 2026/WS/.ipynb_checkpoints/nixtla_diagnostic-checkpoint.py
 2026/WS/__pycache__/nixtla_diagnostic.cpython-39.pyc
+2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/021 - Prophet adapter-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/03 - StatForecast_DSModels(ARIMA)-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/04 - StatForecast_Models_Diagnostics-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/05 - Advanced in Forecast-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/06 - ML forecast-checkpoint.ipynb
+2026/WS/.ipynb_checkpoints/prophet_adapter-checkpoint.py
+2026/WS/__pycache__/prophet_adapter.cpython-39.pyc
+2026/WS/__pycache__/prophet.cpython-39.pyc

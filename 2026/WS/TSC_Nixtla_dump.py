@@ -25,18 +25,42 @@ if TYPE_CHECKING:
 
 from typing import Optional, List, Dict, Union, Tuple
 from utilsforecast.plotting import plot_series as uf_plot_series   
+from utilsforecast.evaluation import evaluate
 
 import re
 
-def extract_model_names(df, base_cols=['unique_id', 'ds', 'y', 'cutoff']):
+def extract_model_names(df, base_cols= ['unique_id', 'ds', 'y', 'cutoff']):
     """
     Извлекает уникальные названия моделей из колонок DataFrame.
-    Удаляет суффиксы: -lo-90, -hi-95, _lo_90, _hi_95 и т.п.
+    Корректно удаляет суффиксы квантилей: -lo-95, -hi-0.5, _lo_90, _hi_0.25 и т.п.
+    
+    Параметры:
+    -----------
+    df : pd.DataFrame
+        Входной датафрейм
+    base_cols : list или None
+        Базовые колонки, которые не являются прогнозами моделей.
+        По умолчанию: ['unique_id', 'ds', 'y', 'cutoff']
+    
+    Возвращает:
+    ------------
+    list
+        Отсортированный список уникальных названий моделей
     """
-    base_cols = set(['unique_id', 'ds', 'y', 'cutoff']) if base_cols is None else set(base_cols)
-    cols = [c for c in df.columns if c not in base_cols]
-    models = {re.sub(r'[-_](lo|hi)[-_]\d+$', '', c) for c in cols}
-    return sorted(list(models - set(base_cols)))
+    if base_cols is None:
+        base_cols = ['unique_id', 'ds', 'y', 'cutoff']
+    
+    base_set = set(base_cols)
+    cols = [c for c in df.columns if c not in base_set]
+    
+    # Исправленное регулярное выражение: поддержка целых и дробных чисел (95, 0.5, 0.25)
+    models = {
+        re.sub(r'[-_](lo|hi)[-_]\d+(\.\d+)?$', '', c)
+        for c in cols
+    }    
+    # Удаляем пустые строки и базовые колонки (на случай артефактов)
+    models = {m for m in models if m and m not in base_set}    
+    return sorted(models)
     
 
 def plt_style_GOST(fig_size = (12, 2.0)):
@@ -115,6 +139,10 @@ def plot_series_v2(
         n_cols: int = 1 — количество столбцов в сетке подграфиков, если -1 то все ВР 
         ...
     """
+
+#     fig = plot_series(prep)
+# fig.set_size_inches(18, 4, forward=True)
+# fig
     if engine != "matplotlib":
         # Для plotly сетка и figsize не управляются здесь — передаём как есть
         return uf_plot_series(
@@ -206,7 +234,7 @@ def plot_series_v2(
 
 
  
-def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None, model_names=None, plot=True):
+def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None, model_names=None, plot=True, modeh=True):
     """
     Универсальная оценка и визуализация прогнозов.
     
@@ -289,11 +317,20 @@ def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None
         models=model_names,  # ← критически важно указать явно!
         train_df=df_train,
         level=eval_level,
-    ).pivot(
-        index='metric',
-        columns='unique_id',
-        values=model_names
     )
+
+    if modeh:
+        metrics_df=metrics_df.pivot(
+            index='metric',
+            columns='unique_id',
+            values=model_names
+        )
+    else:
+        metrics_df=metrics_df.pivot(
+        .pivot_table(
+        index=['unique_id', 'metric'],
+        values=model_names
+        )
     display(metrics_df.style.format('{:.2f}'))
     
     # === Визуализация ===

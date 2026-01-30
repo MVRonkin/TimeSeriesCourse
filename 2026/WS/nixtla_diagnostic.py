@@ -376,6 +376,8 @@ def block_bootstrap_forecast(
                 fcst.loc[idx, f'{m}_{suffix}-lo-{lvl}'] = lo
                 fcst.loc[idx, f'{m}_{suffix}-hi-{lvl}'] = hi
     
+    
+    fcst = fcst.drop(columns = models)
     # === Возврат результата ===
     if return_simulations:
         return fcst, simulations_dict
