@@ -326,8 +326,7 @@ def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None
             values=model_names
         )
     else:
-        metrics_df=metrics_df.pivot(
-        .pivot_table(
+        metrics_df=metrics_df.pivot_table(
         index=['unique_id', 'metric'],
         values=model_names
         )
