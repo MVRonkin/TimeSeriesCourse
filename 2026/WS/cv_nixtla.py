@@ -13,1100 +13,675 @@ from statsforecast import StatsForecast
 from utilsforecast.evaluation import evaluate
 from typing import List, Callable, Optional
 
-def make_cv_splits(
-    df, 
-    h, 
-    step_size, 
-    train_window=None, 
-    strategy='expanding',
-    n_windows_per_train=1,
-    test_step=None  # ← НОВЫЙ ПАРАМЕТР
+import matplotlib.pyplot as plt
+
+   
+def plot_cv_windows(
+    df,
+    cutoffs=None,
+    h=7,
+    input_size=None,
+    step_size=1,
+    test_size=None,
+    freq='D',
+    refit=True,
+    gap=0,
+    unique_id=None,  # ← НОВЫЙ ПАРАМЕТР
+    title="Cross-Validation Windows",
+    figsize=(12, 6),  # увеличил высоту по умолчанию
+    **kwargs
 ):
     """
-    Генерирует CV-окна.
-    
-    Новые параметры:
-    - n_windows_per_train: сколько тестовых окон на каждую позицию обучения.
-    - test_step: шаг между тестовыми окнами (в шагах временной шкалы).
-                 Если None → равен h (тесты идут подряд без пропусков).
-    """
-    if test_step is None:
-        test_step = h
-    
-    df = df.sort_values(['unique_id', 'ds'])
-    all_splits = []
-    
-    for uid, group in df.groupby('unique_id'):
-        dates = group['ds'].tolist()
-        n = len(dates)
-        
-        if strategy == 'backtest':
-            if train_window is None:
-                raise ValueError("Для backtest нужен train_window")
-            train_start_idx = 0
-            train_end_idx = train_window - 1
-            
-            # Первая позиция теста
-            base_test_start = train_end_idx + 1
-            pos = base_test_start
-            
-            while pos + h - 1 < n:
-                for w in range(n_windows_per_train):
-                    test_start = pos + w * test_step
-                    test_end = test_start + h - 1
-                    if test_end >= n:
-                        break
-                    all_splits.append({
-                        'unique_id': uid,
-                        'train_start': dates[train_start_idx],
-                        'train_end': dates[train_end_idx],
-                        'test_start': dates[test_start],
-                        'test_end': dates[test_end]
-                    })
-                # Сдвигаемся к следующей позиции обучения
-                pos += step_size
-                
-        else:
-            # expanding / sliding
-            # Последняя возможная позиция cutoff'а
-            last_possible = n - 1 - (n_windows_per_train - 1) * test_step - h
-            if last_possible < 0:
-                continue
-                
-            cutoff_positions = []
-            pos = last_possible
-            min_train_len = train_window if strategy == 'sliding' else 1
-            
-            while pos >= min_train_len - 1:
-                cutoff_positions.append(pos)
-                pos -= step_size
-            cutoff_positions = sorted(cutoff_positions)
-            
-            for cutoff in cutoff_positions:
-                if strategy == 'expanding':
-                    train_start_idx = 0
-                else:  # sliding
-                    train_start_idx = max(0, cutoff - train_window + 1)
-                
-                for w in range(n_windows_per_train):
-                    test_start = cutoff + 1 + w * test_step
-                    test_end = test_start + h - 1
-                    if test_end >= n:
-                        break
-                    all_splits.append({
-                        'unique_id': uid,
-                        'train_start': dates[train_start_idx],
-                        'train_end': dates[cutoff],
-                        'test_start': dates[test_start],
-                        'test_end': dates[test_end]
-                    })
-    
-    return pd.DataFrame(all_splits)
-
-
-    
-
-def plot_cv_splits(df, splits, unique_id, title="CV Splits"):
-    """
-    Визуализация CV-окон линиями.
+    Визуализация окон кросс-валидации с поддержкой расширяющегося и фиксированного окна.
+    Обучающие окна отображаются только там, где происходит обучение (refit).
     
     Параметры:
-    - df: исходный DataFrame с ['ds', 'y']
-    - splits: результат make_cv_splits
-    - unique_id: строка
-    - title: заголовок
+    ----------
+    df : pd.DataFrame
+        Данные с колонками 'ds', 'y' и опционально 'unique_id'
+    unique_id : str, optional
+        Если задан и колонка 'unique_id' существует — отображается сам временной ряд справа
+    ... остальные параметры без изменений ...
     """
-    series = df[df['unique_id'] == unique_id].sort_values('ds')
-    windows = splits[splits['unique_id'] == unique_id]
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
+    from matplotlib.patches import Patch
     
-    plt.figure(figsize=(10, 2 + len(windows) * 0.5))
+    # Фильтрация по unique_id если задан
+    if unique_id is not None and 'unique_id' in df.columns:
+        df_plot = df[df['unique_id'] == unique_id].copy()
+        title = f"{title} ({unique_id})"
+    else:
+        df_plot = df.copy()
+        unique_id = None  # чтобы не пытаться рисовать ряд
     
-    for i, (_, row) in enumerate(windows.iterrows()):
+    df_plot = df_plot.sort_values('ds').reset_index(drop=True)
+    ds_min = df_plot['ds'].min()
+    ds_max = df_plot['ds'].max()
+    
+    # ... весь существующий код до создания фигуры без изменений ...
+    
+    # Нормализуем freq к строке
+    if hasattr(freq, 'freqstr'):
+        freq_str = freq.freqstr
+    elif hasattr(freq, '_prefix'):
+        prefix = freq._prefix
+        freq_str = f'{freq.n}{prefix}' if hasattr(freq, 'n') and freq.n != 1 else prefix
+    else:
+        freq_str = str(freq)
+    
+    if freq_str.replace('-', '').replace('+', '').isalnum():
+        freq_multiplier = 1
+        freq_suffix = freq_str
+    else:
+        import re
+        match = re.match(r'([+-]?\d+)([A-Za-z]+)', freq_str)
+        if match:
+            freq_multiplier = int(match.group(1))
+            freq_suffix = match.group(2)
+        else:
+            freq_multiplier = 1
+            freq_suffix = freq_str
+
+    # Автоматический расчёт cutoffs если не заданы
+    if cutoffs is None:
+        if test_size is None:
+            raise ValueError("Either 'cutoffs' or 'test_size' must be provided")
+        
+        last_cutoff = df_plot['ds'].iloc[-test_size]
+        first_cutoff = df_plot['ds'].iloc[-(test_size + h - 1)]
+        
+        cutoffs = []
+        current = first_cutoff
+        offset_step = pd.tseries.frequencies.to_offset(f'{step_size * freq_multiplier}{freq_suffix}')
+        while current <= last_cutoff:
+            cutoffs.append(current)
+            current += offset_step
+    else:
+        cutoffs = sorted(pd.to_datetime(cutoffs))
+    
+    if isinstance(h, (int, float)):
+        h_offset = pd.tseries.frequencies.to_offset(f'{h * freq_multiplier}{freq_suffix}')
+    else:
+        h_offset = pd.to_timedelta(h)
+    
+    # Создаём фигуру
+    fig, ax = plt.subplots(figsize=figsize, facecolor='white')
+    
+    # Цвета
+    train_color = '#1f77b4'
+    test_color = '#d62728'
+    cutoff_color = 'black'
+    no_train_color = '#cccccc'
+    series_color = '#2ca02c'  # зелёный для временного ряда
+    
+    # Определяем, где происходит обучение
+    fit_windows = []
+    if refit is True:
+        fit_windows = list(range(len(cutoffs)))
+    elif refit is False:
+        fit_windows = [0]
+    elif isinstance(refit, int) and refit > 0:
+        fit_windows = list(range(0, len(cutoffs), refit))
+    else:
+        fit_windows = [0]
+    
+    # Рисуем окна
+    for i, cutoff in enumerate(cutoffs):
         y_level = i + 1
         
-        # Обучение
-        plt.plot([row['train_start'], row['train_end']], [y_level, y_level],
-                 color='C0', linewidth=2, solid_capstyle='butt')
-        # Тест
-        plt.plot([row['test_start'], row['test_end']], [y_level, y_level],
-                 color='C1', linestyle='--', linewidth=2, solid_capstyle='butt')
-        # Граница
-        plt.scatter([row['train_end']], [y_level], color='black', s=20, zorder=5)
+        if input_size is None:
+            train_start_full = ds_min
+        else:
+            offset_input = pd.tseries.frequencies.to_offset(f'{input_size * freq_multiplier}{freq_suffix}')
+            train_start_full = cutoff - offset_input
+            train_start_full = train_start_full if train_start_full >= ds_min else ds_min
+        
+        test_end = cutoff + h_offset
+        test_end = min(test_end, ds_max)
+        
+        # Тестовое окно
+        ax.plot([cutoff, test_end], [y_level, y_level],
+                color=test_color, linestyle='--', linewidth=2.5, solid_capstyle='butt')
+        
+        # Обучающее окно
+        if i in fit_windows:
+            ax.plot([train_start_full, cutoff], [y_level, y_level],
+                    color=train_color, linewidth=2.5, solid_capstyle='butt')
+        else:
+            prev_cutoff = cutoffs[i-1] if i > 0 else ds_min
+            ax.plot([prev_cutoff, cutoff], [y_level, y_level],
+                    color=no_train_color, linewidth=2.5, solid_capstyle='butt')
+        
+        ax.scatter([cutoff], [y_level], color=cutoff_color, s=40, zorder=5, marker='|')
+        ax.scatter([test_end], [y_level], color=cutoff_color, s=40, zorder=5, marker='|')
     
-    plt.yticks(range(1, len(windows) + 1), [f"Окно {i+1}" for i in range(len(windows))])
-    plt.xlabel('Дата')
-    plt.title(f"{title}: {unique_id}")
-    plt.grid(True, axis='x', linestyle='--', alpha=0.5)
+    # Настройка основных осей
+    ax.set_yticks(range(1, len(cutoffs) + 1))
+    ax.set_yticklabels([f"Window {i+1}" for i in range(len(cutoffs))], fontsize=9)
+    ax.set_xlabel('Date', fontsize=10, fontweight='bold')
+    ax.set_title(title, fontsize=12, fontweight='bold', pad=15)
+    ax.grid(True, axis='x', linestyle='--', alpha=0.6, linewidth=0.8)
+    ax.grid(True, axis='y', linestyle='--', alpha=0.3, linewidth=0.5)
+    ax.tick_params(axis='x', rotation=45)
+    
+    # Форматирование дат
+    if (ds_max - ds_min).days > 365:
+        date_format = '%Y-%m'
+    elif (ds_max - ds_min).days > 30:
+        date_format = '%Y-%m-%d'
+    else:
+        date_format = '%m-%d'
+    ax.xaxis.set_major_formatter(mdates.DateFormatter(date_format))
+    fig.autofmt_xdate()
+    
+    # ДОБАВЛЕНО: Отображение временного ряда на правой оси
+    if unique_id is not None:
+        # Создаём вторичную ось
+        ax_series = ax.twinx()
+        
+        # Рисуем сам временной ряд
+        ax_series.plot(df_plot['ds'], df_plot['y'], 
+                      color=series_color, linewidth=1.5, alpha=0.7, label='Time Series')
+        
+        # Настройка правой оси
+        ax_series.set_ylabel('Value', color=series_color, fontsize=10, fontweight='bold')
+        ax_series.tick_params(axis='y', colors=series_color)
+        ax_series.spines['right'].set_color(series_color)
+        
+        # Добавляем легенду для ряда
+        legend_elements = [
+            Patch(facecolor=train_color, edgecolor='none', label='Training window (with refit)'),
+            Patch(facecolor=no_train_color, edgecolor='none', label='No refit (using previous model)'),
+            Patch(facecolor=test_color, edgecolor='none', label='Forecast horizon (h)'),
+            plt.Line2D([0], [0], color=cutoff_color, marker='|', linestyle='None',
+                       markersize=8, label='Cutoff / Forecast end'),
+            plt.Line2D([0], [0], color=series_color, linewidth=1.5, 
+                       label='Time Series (y)')
+        ]
+    else:
+        legend_elements = [
+            Patch(facecolor=train_color, edgecolor='none', label='Training window (with refit)'),
+            Patch(facecolor=no_train_color, edgecolor='none', label='No refit (using previous model)'),
+            Patch(facecolor=test_color, edgecolor='none', label='Forecast horizon (h)'),
+            plt.Line2D([0], [0], color=cutoff_color, marker='|', linestyle='None',
+                       markersize=8, label='Cutoff / Forecast end')
+        ]
+    
+    ax.legend(handles=legend_elements, loc='upper right', fontsize=9, framealpha=0.9)
+    
+    # Аннотация
+    window_type = f"Expanding ({freq_str})" if input_size is None else f"Rolling (size={input_size}{freq_str})"
+    refit_info = f", refit={'all' if refit is True else ('first' if refit is False else f'every {refit}')}"
+    ax.text(0.02, 0.98, window_type + refit_info, transform=ax.transAxes,
+            fontsize=9, verticalalignment='top',
+            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
+    
+    ax.axvline(x=ds_max, color='gray', linestyle=':', alpha=0.5, linewidth=1, label='_nolegend_')
+    
+    plt.tight_layout()
+    return fig, ax
+
+def plot_cv_metric(result, metric='mae', series_list=None, figsize=(12, 8)):
+    """
+    Визуализация CV метрики:
+    - слева: динамика метрики по CV-окнам
+    - справа: распределение метрики (boxplot)
+    
+    Параметры:
+    ----------
+    result : pd.DataFrame
+        Результат evaluate_cv() с MultiIndex: metric, unique_id, cutoff
+        и колонками — модели
+    metric : str
+        Метрика для визуализации ('mae', 'rmse', 'smape')
+    series_list : list, optional
+        Список временных рядов (unique_id). Если None — берутся все уникальные.
+    figsize : tuple
+        Размер фигуры
+    """
+    df_clean = result.copy()
+    # df_clean = df_clean.reset_index()  # превращаем MultiIndex в колонки
+    
+    # Список уникальных рядов
+    if series_list is None:
+        series_list = sorted(df_clean['unique_id'].unique())
+    
+    # Список моделей (колонки после metric, unique_id, cutoff)
+    model_cols = df_clean.columns.difference(['metric', 'unique_id', 'cutoff'])
+    
+    n_series = len(series_list)
+    fig, axes = plt.subplots(n_series, 2, figsize=figsize)
+    
+    if n_series == 1:
+        axes = [axes]
+    
+    for i, series in enumerate(series_list):
+        data = df_clean[(df_clean['unique_id'] == series) & (df_clean['metric'] == metric)]
+        data = data.sort_values('cutoff')
+        windows = range(1, len(data) + 1)
+        
+        # Левый график: динамика по CV-окнам
+        for model in model_cols:
+            axes[i][0].plot(windows, data[model], label=model, marker='o')
+        axes[i][0].set_title(f'{series} - {metric.upper()} over windows')
+        axes[i][0].set_ylabel(metric.upper())
+        axes[i][0].legend()
+        axes[i][0].grid(True)
+        
+        # Правый график: boxplot распределения
+        box_data = [data[m].values for m in model_cols]
+        axes[i][1].boxplot(box_data, tick_labels=model_cols)
+        axes[i][1].set_title(f'{series} - {metric.upper()} distribution')
+        axes[i][1].set_ylabel(metric.upper())
+        axes[i][1].grid(True)
+    
+    # Подписи осей X
+    axes[-1][0].set_xlabel('CV Window Number')
+    axes[-1][1].set_xlabel('Model')
+    
     plt.tight_layout()
     plt.show()
 
+def plot_cv_ranks(eval_df, metrics=None, figsize=(10, 4), error_type='iqr'):
+    """
+    Визуализация средних рангов моделей по метрикам с показателем разброса.
+    
+    Параметры:
+    -----------
+    eval_df : pd.DataFrame
+        Результат evaluate с колонками ['unique_id', 'metric', 'cutoff'] и колонками моделей
+    metrics : list, optional
+        Список метрик для отображения. Если None - используются все уникальные метрики
+    figsize : tuple, default=(10, 4)
+        Размер фигуры (ширина, высота)
+    error_type : str, default='iqr'
+        Тип меры разброса:
+        - 'iqr': интерквартильный размах (75% - 25% квантиль)
+        - 'mad': медианное абсолютное отклонение
+        - 'std': стандартное отклонение
+    
+    Возвращает:
+    -----------
+    None
+        Выводит график и печатает таблицу статистики
+    
+    Особенности:
+    ------------
+    - Ранжирует модели внутри каждой метрики по каждому окну кросс-валидации
+    - Строит горизонтальные бары для каждой модели с разбивкой по метрикам
+    - Показывает усы с ошибками для каждой метрики отдельно
+    - Ограничивает ошибки, чтобы не уходили за границы возможных рангов
+    """
+    if metrics is None:
+        metrics = eval_df['metric'].unique()
 
+    model_cols = eval_df.columns.difference(['unique_id', 'cutoff', 'metric'])
+    n_models = len(model_cols)
 
+    # Ранжируем модели
+    ranked_rows = []
+    for metric in metrics:
+        df_metric = eval_df.query('metric == @metric').copy()
+        df_metric[model_cols] = df_metric[model_cols].rank(axis=1, method='average')
+        df_metric['metric'] = metric
+        ranked_rows.append(df_metric)
 
+    df_ranks = pd.concat(ranked_rows, ignore_index=True)
 
-def cv_evaluation(
-    df: pd.DataFrame,
-    cv_splits: pd.DataFrame,
-    sf: StatsForecast,
-    metrics: List[Callable],
-    levels: Optional[List[int]] = None,
-    id_col: str = 'unique_id',
-    time_col: str = 'ds',
-    target_col: str = 'y',
-    aggregate: bool = True,
-    refit: bool = True,
+    # Преобразуем в long формат
+    df_long = df_ranks.melt(
+        id_vars=['unique_id', 'cutoff', 'metric'],
+        value_vars=model_cols,
+        var_name='model',
+        value_name='rank'
+    )
+
+    # Агрегация
+    if error_type == 'iqr':
+        agg = df_long.groupby(['metric', 'model'])['rank'].agg(['median', lambda x: x.quantile(0.75) - x.quantile(0.25)]).reset_index()
+        agg.columns = ['metric', 'model', 'median', 'iqr']
+        error_col = 'iqr'
+        central_col = 'median'
+    elif error_type == 'mad':
+        from scipy.stats import median_abs_deviation
+        agg = df_long.groupby(['metric', 'model'])['rank'].agg(['median', median_abs_deviation]).reset_index()
+        agg.columns = ['metric', 'model', 'median', 'mad']
+        error_col = 'mad'
+        central_col = 'median'
+    else:  # std
+        agg = df_long.groupby(['metric', 'model'])['rank'].agg(['mean', 'std']).reset_index()
+        agg.columns = ['metric', 'model', 'mean', 'std']
+        error_col = 'std'
+        central_col = 'mean'
+
+    # Подготовка для графика
+    models = sorted(model_cols)
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Цвета для метрик
+    palette = sns.color_palette("Set2", len(metrics))
+    metric_to_color = dict(zip(metrics, palette))
+
+    n_metrics = len(metrics)
+    y_positions = np.arange(len(models))
+    bar_width = 0.8 / n_metrics
+
+    for i, metric in enumerate(metrics):
+        color = metric_to_color[metric]
+        metric_data = agg[agg['metric'] == metric].set_index('model')
+        y_offsets = y_positions + (i - (n_metrics - 1)/2) * bar_width
+
+        means = [metric_data.loc[m, central_col] if m in metric_data.index else np.nan for m in models]
+        stds = [metric_data.loc[m, error_col] if m in metric_data.index else np.nan for m in models]
+
+        # Ограничиваем усики: не должны уходить за [1, n_models]
+        capped_errors = []
+        for mean_val, std_val in zip(means, stds):
+            if np.isnan(mean_val) or np.isnan(std_val):
+                capped_errors.append(np.nan)
+            else:
+                # Усики не должны уходить за границы [1, n_models]
+                lower_bound = max(1, mean_val - std_val)
+                upper_bound = min(n_models, mean_val + std_val)
+                capped_error = min(std_val, mean_val - lower_bound, upper_bound - mean_val)
+                capped_errors.append(capped_error)
+
+        # Бары
+        bars = ax.barh(y_offsets, means, height=bar_width, color=color, label=metric, alpha=0.8)
+
+        # Усики
+        for y, mean_val, err in zip(y_offsets, means, capped_errors):
+            if not np.isnan(mean_val) and not np.isnan(err):
+                ax.errorbar(
+                    x=mean_val,
+                    y=y,
+                    xerr=err,
+                    fmt='none',
+                    ecolor=color,
+                    capsize=4,
+                    capthick=1.5,
+                    elinewidth=1.2
+                )
+
+    # Настройка осей
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels(models)
+    ax.set_xlabel('Average/Median Rank (lower is better)')
+    ax.set_xlim(left=0)  # чтобы не уходило в отрицательные значения
+    ax.set_title(f"Rank statistics with {error_type.upper()}:")
+    ax.legend(title='Metric')
+    ax.grid(axis='x', alpha=0.3)
+    plt.tight_layout()
+    plt.show()
+
+    # # Вывод статистики
+    # print(f"\nRank statistics (Central ± {error_type.upper()}):")
+    # for model in models:
+    #     print(f"\n{model}:")
+    #     for metric in metrics:
+    #         row = agg[(agg['model'] == model) & (agg['metric'] == metric)]
+    #         if not row.empty:
+    #             center = row[central_col].iloc[0]
+    #             err = row[error_col].iloc[0]
+    #             print(f"  {metric}: {center:.2f} ± {err:.2f}")      
+    
+def plot_cv_series(
+    df_original,
+    cv_df,
+    cutoffs,
+    series_id='Consumption',
+    model=None,  # ← теперь может быть None или 'all'
+    level=None,
+    plot_anomalies=True,
+    refit=True,
+    input_size=None,
+    max_insample_length=None,
+    figsize_per_plot=(12, 2),
+    **kwargs
 ):
     """
-    Корректная кросс-валидация для StatsForecast с поддержкой экзогенных переменных.
-
-    ВАЖНО:
-    - refit=True  → честный CV (fit + predict на каждом сплите)
-    - refit=False → быстрый режим (forecast), без сохранения состояния
-
-    Parameters
+    Визуализация каждого окна кросс-валидации на отдельном subplot.
+    
+    Параметры:
     ----------
-    df : pd.DataFrame
-        Данные в long-формате.
-        Все колонки кроме id_col, time_col, target_col
-        считаются экзогенными и автоматически передаются модели.
-    cv_splits : pd.DataFrame
-        Сплиты с колонками:
-        [id_col, 'train_start', 'train_end', 'test_start', 'test_end']
-    sf : StatsForecast
-        Инициализированный объект StatsForecast (модели заданы заранее)
-    metrics : list
-        Метрики из utilsforecast.evaluation
-    levels : list[int], optional
-        Уровни prediction intervals (например, [80, 95])
-    id_col, time_col, target_col : str
-        Имена колонок
-    aggregate : bool
-        Агрегировать метрики по рядам (mean)
-    refit : bool
-        Переобучать модели на каждом сплите
-
-    Returns
-    -------
-    eval_df : pd.DataFrame
-        Факт + прогнозы для всех CV-окон
-    metrics_df : pd.DataFrame
-        Результаты оценки
+    model : str or list or None
+        Имя модели, список моделей или 'all'. Если None - используется первая доступная.
+        См. extract_model_names для автоматического извлечения.
     """
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import re
 
-    # === Валидация входных данных ===
-    required = {id_col, time_col, target_col}
-    if not required.issubset(df.columns):
-        raise ValueError(f"df must contain columns: {required}")
+    def extract_model_names(df, base_cols=['unique_id', 'ds', 'y', 'cutoff']):
+        """Извлекает уникальные названия моделей из колонок DataFrame."""
+        if base_cols is None:
+            base_cols = ['unique_id', 'ds', 'y', 'cutoff']
+        base_set = set(base_cols)
+        cols = [c for c in df.columns if c not in base_set]
+        models = {
+            re.sub(r'[-_](lo|hi)[-_]\d+(\.\d+)?$', '', c)
+            for c in cols
+        }
+        models = {m for m in models if m and m not in base_set}
+        return sorted(models)
 
-    split_cols = {id_col, 'train_start', 'train_end', 'test_start', 'test_end'}
-    if not split_cols.issubset(cv_splits.columns):
-        raise ValueError(f"cv_splits must contain columns: {split_cols}")
+    n_windows = len(cutoffs)
+    figsize = (figsize_per_plot[0], n_windows * figsize_per_plot[1])
+    fig, axes = plt.subplots(n_windows, 1, figsize=figsize, sharex=True)
+    
+    if n_windows == 1:
+        axes = [axes]
+    
+    orig = df_original[df_original['unique_id'] == series_id].sort_values('ds')
+    
+    # Извлекаем все модели из cv_df
+    all_models = extract_model_names(cv_df)
+    
+    # Определяем, какие модели использовать
+    if model is None:
+        models_to_plot = [all_models[0]] if all_models else []
+    elif model == 'all':
+        models_to_plot = all_models
+    elif isinstance(model, str):
+        models_to_plot = [model]
+    elif isinstance(model, list):
+        models_to_plot = model
+    else:
+        models_to_plot = []
+    
+    # Оставляем только существующие модели
+    models_to_plot = [m for m in models_to_plot if m in all_models]
+    if not models_to_plot:
+        models_to_plot = [all_models[0]] if all_models else []
 
-    # === Вспомогательные функции ===
-    def get_train_test(df, split):
-        mask = df[id_col] == split[id_col]
-
-        train = df[
-            mask &
-            (df[time_col] >= split['train_start']) &
-            (df[time_col] <= split['train_end'])
-        ].copy()
-
-        test = df[
-            mask &
-            (df[time_col] >= split['test_start']) &
-            (df[time_col] <= split['test_end'])
-        ].copy()
-
-        return (
-            train if len(train) > 0 else None,
-            test if len(test) > 0 else None
-        )
-
-    def rename_for_sf(df):
-        """
-        Переименовываем ТОЛЬКО ключевые колонки,
-        все остальные (экзогены) сохраняем.
-        """
-        return df.rename(
-            columns={
-                id_col: 'unique_id',
-                time_col: 'ds',
-                target_col: 'y'
-            }
-        )
-
-    # === Основной цикл CV ===
-    all_evals = []
-    all_metrics = []
-
-    # Имена моделей (используются evaluate)
-    model_names = [m.__class__.__name__ for m in sf.models]
-
-    for _, split in cv_splits.iterrows():
-        train, test = get_train_test(df, split)
-
-        if train is None or test is None or len(test) == 0:
-            continue
-
-        train_sf = rename_for_sf(train)
-        h = len(test)
-
-        # === КЛЮЧЕВОЙ МОМЕНТ: refit ===
-        if refit:
-            # Честный CV
-            sf.fit(train_sf)
-            fcst = sf.predict(h=h, level=levels)
+    if refit is True:
+        fit_windows = list(range(n_windows))
+    elif refit is False:
+        fit_windows = [0]
+    elif isinstance(refit, int) and refit > 0:
+        fit_windows = list(range(0, n_windows, refit))
+    else:
+        fit_windows = [0]
+    
+    for k, (ax, cutoff) in enumerate(zip(axes, cutoffs)):
+        # Инсемпл: последние max_insample_length точек до cutoff
+        cutoff_mask = orig['ds'] <= cutoff
+        orig_filtered = orig[cutoff_mask]
+        if max_insample_length is not None:
+            recent_orig = orig_filtered.tail(max_insample_length)
         else:
-            # Быстрый режим (без сохранения состояния)
-            fcst = sf.forecast(df=train_sf, h=h, level=levels)
+            recent_orig = orig_filtered
+        ax.plot(recent_orig['ds'], recent_orig['y'], 'k-', linewidth=1, alpha=0.7, label='Target')
+        
+        window_data = cv_df[
+            (cv_df['cutoff'] == cutoff) & 
+            (cv_df['unique_id'] == series_id)
+        ].sort_values('ds')
+        
+        if not window_data.empty:
+            # Таргет на тестовом участке (тонкая линия)
+            if 'y' in window_data.columns:
+                ax.plot(window_data['ds'], window_data['y'], 'k-', linewidth=1, alpha=0.7)
+            
+            # Прогнозы для выбранных моделей
+            for model_name in models_to_plot:
+                if model_name in window_data.columns:
+                    ax.plot(window_data['ds'], window_data[model_name], 
+                           linewidth=2.5, label=f'Forecast ({model_name})')
+                    
+                    # Интервалы и аномалии только для текущей модели
+                    if level is not None:
+                        for lev in level:
+                            lo_col = f'{model_name}-lo-{lev}'
+                            hi_col = f'{model_name}-hi-{lev}'
+                            if lo_col in window_data.columns and hi_col in window_data.columns:
+                                ax.fill_between(
+                                    window_data['ds'],
+                                    window_data[lo_col],
+                                    window_data[hi_col],
+                                    alpha=0.2,
+                                    label=f'Level {lev}% ({model_name})'
+                                )
+                    
+                    if plot_anomalies and level is not None:
+                        for lev in level:
+                            lo_col = f'{model_name}-lo-{lev}'
+                            hi_col = f'{model_name}-hi-{lev}'
+                            if lo_col in window_data.columns and hi_col in window_data.columns:
+                                anomalies = (window_data['y'] < window_data[lo_col]) | \
+                                           (window_data['y'] > window_data[hi_col])
+                                if anomalies.any():
+                                    anom_data = window_data[anomalies]
+                                    ax.scatter(anom_data['ds'], anom_data['y'], 
+                                             s=30, alpha=0.8, 
+                                             label=f'Anomalies {lev}% ({model_name})')
+            
+            cutoff_dt = pd.to_datetime(cutoff)
+            ax.axvline(x=cutoff_dt, color='red', linestyle='--', alpha=0.8, label='Test start')
+            
+            test_end = window_data['ds'].max()
+            ax.axvline(x=test_end, color='red', linestyle='--', alpha=0.8, label='Test end')
+            
+            if input_size is not None:
+                orig_series = df_original[df_original['unique_id'] == series_id].sort_values('ds')
+                if len(orig_series) > 1:
+                    freq = pd.infer_freq(orig_series['ds'])
+                    if freq:
+                        train_start = cutoff_dt - pd.tseries.frequencies.to_offset(f'{input_size}{freq}')
+                    else:
+                        min_step = orig_series['ds'].diff().min()
+                        train_start = cutoff_dt - input_size * min_step
+                else:
+                    train_start = cutoff_dt - pd.Timedelta(days=input_size)
+                
+                train_end_color = 'blue' if k in fit_windows else 'gray'
+                train_end_style = '-' if k in fit_windows else ':'
+                ax.axvline(x=train_start, color=train_end_color, linestyle=train_end_style, 
+                          alpha=0.8, label='Train start')
+        
+        ax.set_ylabel(f'Window {k+1}')
+        ax.grid(True, alpha=0.3)
+        ax.legend(loc='upper right')
+    
+    axes[-1].set_xlabel('Date')
+    model_str = ', '.join(models_to_plot)
+    title = f'CV Windows - {series_id} ({model_str})'
+    if refit is not True:
+        title += f', refit={refit}'
+    if input_size:
+        title += f', train_len={input_size}'
+    fig.suptitle(title, y=0.98)
+    plt.tight_layout()
+    return fig, axes
 
-        fcst['cutoff'] = split['train_end']
-
-        # Возвращаем оригинальные имена колонок
-        fcst = fcst.rename(
-            columns={
-                'unique_id': id_col,
-                'ds': time_col
-            }
-        )
-
-        # === Объединяем прогноз с фактом ===
-        eval_row = test.merge(
-            fcst,
-            on=[id_col, time_col],
-            how='inner'
-        )
-
-        all_evals.append(eval_row)
-
-        # === Оценка метрик ===
-        eval_renamed = rename_for_sf(eval_row)
-        train_renamed = rename_for_sf(train)
-
-        metrics_res = evaluate(
-            df=eval_renamed,
-            metrics=metrics,
-            models=model_names,
-            train_df=train_renamed,
-            level=levels
-        )
-
-        metrics_res[id_col] = split[id_col]
-        metrics_res['cutoff'] = split['train_end']
-
-        all_metrics.append(metrics_res)
-
-    if not all_evals:
-        raise ValueError("No valid CV splits produced forecasts")
-
-    # === Сборка результатов ===
-    eval_df = pd.concat(all_evals, ignore_index=True)
-    metrics_df = pd.concat(all_metrics, ignore_index=True)
-
-    if aggregate:
-        metrics_df = (
-            metrics_df
-            .groupby(['metric', id_col])[model_names]
-            .mean()
-            .reset_index()
-        )
-
-    return eval_df, metrics_df
 
 
-
-# def make_cv_splits(
-#     df, 
-#     h, 
-#     step_size, 
-#     train_window=None, 
-#     strategy='expanding',
-#     n_windows_per_train=1,
-#     test_step=None  # ← НОВЫЙ ПАРАМЕТР
+# def evaluate_cv(
+#     crossvalidation_df,
+#     metrics,
+#     model_names,
+#     train_df = None,
+#     target_col='y',
+#     level=None,
+#     ts_aggregate=True,
+#     cutoff_aggregate=True,
+#     ret_styled = True
 # ):
 #     """
-#     Генерирует CV-окна.
-    
-#     Новые параметры:
-#     - n_windows_per_train: сколько тестовых окон на каждую позицию обучения.
-#     - test_step: шаг между тестовыми окнами (в шагах временной шкалы).
-#                  Если None → равен h (тесты идут подряд без пропусков).
-#     """
-#     if test_step is None:
-#         test_step = h
-    
-#     df = df.sort_values(['unique_id', 'ds'])
-#     all_splits = []
-    
-#     for uid, group in df.groupby('unique_id'):
-#         dates = group['ds'].tolist()
-#         n = len(dates)
-        
-#         if strategy == 'backtest':
-#             if train_window is None:
-#                 raise ValueError("Для backtest нужен train_window")
-#             train_start_idx = 0
-#             train_end_idx = train_window - 1
-            
-#             # Первая позиция теста
-#             base_test_start = train_end_idx + 1
-#             pos = base_test_start
-            
-#             while pos + h - 1 < n:
-#                 for w in range(n_windows_per_train):
-#                     test_start = pos + w * test_step
-#                     test_end = test_start + h - 1
-#                     if test_end >= n:
-#                         break
-#                     all_splits.append({
-#                         'unique_id': uid,
-#                         'train_start': dates[train_start_idx],
-#                         'train_end': dates[train_end_idx],
-#                         'test_start': dates[test_start],
-#                         'test_end': dates[test_end]
-#                     })
-#                 # Сдвигаемся к следующей позиции обучения
-#                 pos += step_size
-                
-#         else:
-#             # expanding / sliding
-#             # Последняя возможная позиция cutoff'а
-#             last_possible = n - 1 - (n_windows_per_train - 1) * test_step - h
-#             if last_possible < 0:
-#                 continue
-                
-#             cutoff_positions = []
-#             pos = last_possible
-#             min_train_len = train_window if strategy == 'sliding' else 1
-            
-#             while pos >= min_train_len - 1:
-#                 cutoff_positions.append(pos)
-#                 pos -= step_size
-#             cutoff_positions = sorted(cutoff_positions)
-            
-#             for cutoff in cutoff_positions:
-#                 if strategy == 'expanding':
-#                     train_start_idx = 0
-#                 else:  # sliding
-#                     train_start_idx = max(0, cutoff - train_window + 1)
-                
-#                 for w in range(n_windows_per_train):
-#                     test_start = cutoff + 1 + w * test_step
-#                     test_end = test_start + h - 1
-#                     if test_end >= n:
-#                         break
-#                     all_splits.append({
-#                         'unique_id': uid,
-#                         'train_start': dates[train_start_idx],
-#                         'train_end': dates[cutoff],
-#                         'test_start': dates[test_start],
-#                         'test_end': dates[test_end]
-#                     })
-    
-#     return pd.DataFrame(all_splits)
-
-# def plot_cv_splits(df, splits, unique_id, title="CV Splits"):
-#     """
-#     Визуализация CV-окон линиями.
+#     Оценка результатов кросс-валидации с гибкой агрегацией.
     
 #     Параметры:
-#     - df: исходный DataFrame с ['ds', 'y']
-#     - splits: результат make_cv_splits
-#     - unique_id: строка
-#     - title: заголовок
+#     ----------
+#     crossvalidation_df : pd.DataFrame
+#         Данные в лонг-формате с колонкой 'cutoff'     
+#     metrics : list
+#         Список функций метрик (например, [smape, mae, rmse])
+#     model_names : list
+#         Список названий моделей
+#     train_df : pd.DataFrame
+#         Данные для scaled метрик  
+#     target_col : str, default='y'
+#         Название колонки с целевой переменной
+#     level : float or None, default=None
+#         Уровень для квантильных прогнозов
+#     ts_aggregate : bool, default=True
+#         Если True — агрегировать по временным рядам (уникальным unique_id)
+#     cutoff_aggregate : bool, default=True
+#         Если True — агрегировать по окнам кросс-валидации (cutoff)
+#     ret_styled: bool, default=True
+#         Если True — стильная таблица на выходе
+#     Возвращает:
+#     -----------
+#     pd.io.formats.style.Styler
+#         Стилизованный датафрейм с метриками
 #     """
-#     series = df[df['unique_id'] == unique_id].sort_values('ds')
-#     windows = splits[splits['unique_id'] == unique_id]
+#     evaluations = []
+#     cutoffs = crossvalidation_df['cutoff'].unique()
     
-#     plt.figure(figsize=(10, 2 + len(windows) * 0.5))
-    
-#     for i, (_, row) in enumerate(windows.iterrows()):
-#         y_level = i + 1
-        
-#         # Обучение
-#         plt.plot([row['train_start'], row['train_end']], [y_level, y_level],
-#                  color='C0', linewidth=2, solid_capstyle='butt')
-#         # Тест
-#         plt.plot([row['test_start'], row['test_end']], [y_level, y_level],
-#                  color='C1', linestyle='--', linewidth=2, solid_capstyle='butt')
-#         # Граница
-#         plt.scatter([row['train_end']], [y_level], color='black', s=20, zorder=5)
-    
-#     plt.yticks(range(1, len(windows) + 1), [f"Окно {i+1}" for i in range(len(windows))])
-#     plt.xlabel('Дата')
-#     plt.title(f"{title}: {unique_id}")
-#     plt.grid(True, axis='x', linestyle='--', alpha=0.5)
-#     plt.tight_layout()
-#     plt.show()    
-
-
-
-# def cv_evaluation_with_forecasts(
-#     df, 
-#     splits, 
-#     models, 
-#     model_names,
-#     metrics,
-#     refit=True,
-#     freq=FREQ
-# ):
-#     all_evals = []
-#     all_forecasts = []  # ← НОВОЕ
-#     sf_cache = {}
-    
-#     grouped = splits.groupby(['unique_id', 'train_start', 'train_end'])
-    
-#     for (uid, train_start, train_end), group in grouped:
-#         test_rows = []
-#         test_info = []  # чтобы знать, откуда какие даты
-#         for _, row in group.iterrows():
-#             mask = (
-#                 (df['unique_id'] == uid) &
-#                 (df['ds'] >= row['test_start']) &
-#                 (df['ds'] <= row['test_end'])
-#             )
-#             subset = df[mask]
-#             test_rows.append(subset)
-#             test_info.append(row)
-        
-#         if not test_rows:
-#             continue
-            
-#         test = pd.concat(test_rows).sort_values('ds').reset_index(drop=True)
-#         train = df[
-#             (df['unique_id'] == uid) &
-#             (df['ds'] >= train_start) &
-#             (df['ds'] <= train_end)
-#         ].copy()
-        
-#         if len(train) == 0 or len(test) == 0:
-#             continue
-        
-#         pred_cols = {'ds': test['ds'].values, 'unique_id': uid}
-#         for model, name in zip(models, model_names):
-#             cache_key = (name, uid, train_start, train_end)
-#             if refit or cache_key not in sf_cache:
-#                 sf = StatsForecast(models=[model], freq=freq)
-#                 sf.fit(train)
-#                 if not refit:
-#                     sf_cache[cache_key] = sf
-#             else:
-#                 sf = sf_cache[cache_key]
-            
-#             h = len(test)
-#             pred = sf.predict(h=h)
-#             pred_cols[name] = pred[name].values[:h]
-        
-#         # Сохраняем прогнозы
-#         forecast_df = pd.DataFrame(pred_cols)
-#         forecast_df['train_start'] = train_start
-#         forecast_df['train_end'] = train_end
-#         all_forecasts.append(forecast_df)
-        
-#         # Оценка
-#         eval_df = test[['unique_id', 'ds', 'y']].copy()
-#         for name in model_names:
-#             eval_df[name] = pred_cols[name]
-        
-#         eval_result = evaluate(df=eval_df, metrics=metrics, train_df=train)
-#         eval_result['train_start'] = train_start
-#         eval_result['train_end'] = train_end
-#         eval_result['test_start'] = test['ds'].min()
-#         eval_result['test_end'] = test['ds'].max()
-#         all_evals.append(eval_result)
-    
-#     return pd.concat(all_evals, ignore_index=True), pd.concat(all_forecasts, ignore_index=True)
-    
-# # def plot_cv_splits(df, splits, unique_id, title="CV Splits"):
-# #     """
-# #     Визуализация CV-окон линиями.
-    
-# #     Параметры:
-# #     - df: исходный DataFrame с ['ds', 'y']
-# #     - splits: результат make_cv_splits
-# #     - unique_id: строка
-# #     - title: заголовок
-# #     """
-# #     series = df[df['unique_id'] == unique_id].sort_values('ds')
-# #     windows = splits[splits['unique_id'] == unique_id]
-    
-# #     plt.figure(figsize=(10, 2 + len(windows) * 0.5))
-    
-# #     for i, (_, row) in enumerate(windows.iterrows()):
-# #         y_level = i + 1
-        
-# #         # Обучение
-# #         plt.plot([row['train_start'], row['train_end']], [y_level, y_level],
-# #                  color='C0', linewidth=2, solid_capstyle='butt')
-# #         # Тест
-# #         plt.plot([row['test_start'], row['test_end']], [y_level, y_level],
-# #                  color='C1', linestyle='--', linewidth=2, solid_capstyle='butt')
-# #         # Граница
-# #         plt.scatter([row['train_end']], [y_level], color='black', s=20, zorder=5)
-    
-# #     plt.yticks(range(1, len(windows) + 1), [f"Окно {i+1}" for i in range(len(windows))])
-# #     plt.xlabel('Дата')
-# #     plt.title(f"{title}: {unique_id}")
-# #     plt.grid(True, axis='x', linestyle='--', alpha=0.5)
-# #     plt.tight_layout()
-# #     plt.show()
-
-# def get_train_test_from_split(
-#     df,
-#     split,
-#     id_col='unique_id',
-#     time_col='ds'
-# ):
-#     mask_uid = df[id_col] == split[id_col]
-
-#     df_train = df.loc[
-#         mask_uid &
-#         (df[time_col] >= split['train_start']) &
-#         (df[time_col] <= split['train_end'])
-#     ].copy()
-
-#     df_test = df.loc[
-#         mask_uid &
-#         (df[time_col] >= split['test_start']) &
-#         (df[time_col] <= split['test_end'])
-#     ].copy()
-
-#     if df_train.empty or df_test.empty:
-#         return None, None
-
-#     return df_train, df_test
-
-
-# def forecast_one_split(
-#     sf,
-#     df,
-#     split,
-#     level=None
-# ):
-#     df_train, df_test = get_train_test_from_split(df, split)
-    
-#     h = len(df_test)  # ← ЕДИНСТВЕННЫЙ источник истины
-    
-#     if h == 0:
-#         raise ValueError("Empty test window in CV split.")
-    
-#     fcst = sf.forecast(
-#         df=df_train,
-#         h=h,
-#         level=level
-#     )
-    
-#     fcst['cutoff'] = split['train_end']
-    
-#     return df_train, df_test, fcst
-
-
-
-# def cv_evaluation(
-#     df,
-#     cv_splits,
-#     sf,
-#     metrics,
-#     levels=None,
-#     aggregate=True,
-#     id_col='unique_id',
-#     time_col='ds',
-#     target_col='y',
-# ):
-#     """
-#     Cross-validation для StatsForecast на пользовательских CV-окнах.
-#     Корректно совместима с Nixtla (StatsForecast + utilsforecast).
-#     """
-
-#     all_eval = []
-#     all_metrics = []
-
-#     for _, split in cv_splits.iterrows():
-
-#         df_train, df_test = get_train_test_from_split(
-#             df, split, id_col, time_col
-#         )
-#         if df_train is None:
-#             continue
-
-#         # === StatsForecast формат ===
-#         df_train_sf = df_train.rename(columns={
-#             id_col: 'unique_id',
-#             time_col: 'ds',
-#             target_col: 'y'
-#         })
-
-#         h = len(df_test)
-#         if h == 0:
-#             continue
-
-#         # === Прогноз ===
-#         fcst = sf.forecast(
-#             df=df_train_sf,
-#             h=h,
-#             level=levels
-#         )
-#         fcst['cutoff'] = split['train_end']
-
-#         # === Возвращаем исходные имена ===
-#         fcst = fcst.rename(columns={
-#             'unique_id': id_col,
-#             'ds': time_col
-#         })
-
-#         eval_df = df_test[[id_col, time_col, target_col]].merge(
-#             fcst,
-#             on=[id_col, time_col],
-#             how='inner'
-#         )
-#         all_eval.append(eval_df)
-
-#         # === evaluate требует локальный train_df ===
-#         eval_renamed = eval_df.rename(columns={
-#             id_col: 'unique_id',
-#             time_col: 'ds',
-#             target_col: 'y'
-#         })
-#         train_renamed = df_train.rename(columns={
-#             id_col: 'unique_id',
-#             time_col: 'ds',
-#             target_col: 'y'
-#         })
-
-#         model_names = [
-#             c for c in eval_renamed.columns
-#             if c not in {'unique_id', 'ds', 'y', 'cutoff'}
-#             and not c.endswith(tuple(['lo', 'hi']))
-#         ]
-
-#         metrics_df = evaluate(
-#             df=eval_renamed,
-#             train_df=train_renamed,
+#     for c in cutoffs:
+#         df_cv = crossvalidation_df.query('cutoff == @c')
+#         evaluation = evaluate(
+#             df=df_cv,
 #             metrics=metrics,
 #             models=model_names,
-#             level=levels
+#             level=level,
+#             train_df = train_df,
+#             target_col=target_col
 #         )
-
-#         all_metrics.append(metrics_df)
-
-#     if not all_eval:
-#         raise ValueError("CV did not produce any valid forecasts.")
-
-#     eval_df = pd.concat(all_eval, ignore_index=True)
-#     metrics_df = pd.concat(all_metrics, ignore_index=True)
-
-#     if aggregate:
-#         metrics_df = (
-#             metrics_df
-#             .groupby(['metric', 'unique_id'])[model_names]
-#             .mean()
+#         evaluation['cutoff'] = c  # сохраняем информацию об окне
+#         evaluations.append(evaluation)
+    
+#     evaluations = pd.concat(evaluations, ignore_index=True)
+    
+#     # Определяем уровни группировки
+#     group_cols = ['metric']
+#     if not ts_aggregate and 'unique_id' in evaluations.columns:
+#         group_cols.append('unique_id')
+#     if not cutoff_aggregate:
+#         group_cols.append('cutoff')
+    
+#     # Агрегация
+#     if len(group_cols) > 0:
+#         evaluations = evaluations.groupby(group_cols).mean(numeric_only=True)
+#     else:
+#         evaluations = evaluations.mean(numeric_only=True).to_frame().T
+    
+#     # Стилизация с учётом структуры индекса
+#     if isinstance(evaluations.index, pd.MultiIndex):
+#         # Для мультииндекса применяем градиент по строкам
+#         styled = evaluations.style.background_gradient(
+#             cmap='RdYlGn_r', 
+#             axis=1,
+#             vmin=evaluations.min().min(),
+#             vmax=evaluations.max().max()
 #         )
-
-#     return eval_df, metrics_df
-
-# # def make_cv_splits(
-# #     df, 
-# #     h, 
-# #     step_size, 
-# #     train_window=None, 
-# #     strategy='expanding',
-# #     n_windows_per_train=1,
-# #     test_step=None  # ← НОВЫЙ ПАРАМЕТР
-# # ):
-# #     """
-# #     Генерирует CV-окна.
+#     else:
+#         styled = evaluations.style.background_gradient(cmap='RdYlGn_r', axis=1)
     
-# #     Новые параметры:
-# #     - n_windows_per_train: сколько тестовых окон на каждую позицию обучения.
-# #     - test_step: шаг между тестовыми окнами (в шагах временной шкалы).
-# #                  Если None → равен h (тесты идут подряд без пропусков).
-# #     """
-# #     if test_step is None:
-# #         test_step = h
-    
-# #     df = df.sort_values(['unique_id', 'ds'])
-# #     all_splits = []
-    
-# #     for uid, group in df.groupby('unique_id'):
-# #         dates = group['ds'].tolist()
-# #         n = len(dates)
-        
-# #         if strategy == 'backtest':
-# #             if train_window is None:
-# #                 raise ValueError("Для backtest нужен train_window")
-# #             train_start_idx = 0
-# #             train_end_idx = train_window - 1
-            
-# #             # Первая позиция теста
-# #             base_test_start = train_end_idx + 1
-# #             pos = base_test_start
-            
-# #             while pos + h - 1 < n:
-# #                 for w in range(n_windows_per_train):
-# #                     test_start = pos + w * test_step
-# #                     test_end = test_start + h - 1
-# #                     if test_end >= n:
-# #                         break
-# #                     all_splits.append({
-# #                         'unique_id': uid,
-# #                         'train_start': dates[train_start_idx],
-# #                         'train_end': dates[train_end_idx],
-# #                         'test_start': dates[test_start],
-# #                         'test_end': dates[test_end]
-# #                     })
-# #                 # Сдвигаемся к следующей позиции обучения
-# #                 pos += step_size
-                
-# #         else:
-# #             # expanding / sliding
-# #             # Последняя возможная позиция cutoff'а
-# #             last_possible = n - 1 - (n_windows_per_train - 1) * test_step - h
-# #             if last_possible < 0:
-# #                 continue
-                
-# #             cutoff_positions = []
-# #             pos = last_possible
-# #             min_train_len = train_window if strategy == 'sliding' else 1
-            
-# #             while pos >= min_train_len - 1:
-# #                 cutoff_positions.append(pos)
-# #                 pos -= step_size
-# #             cutoff_positions = sorted(cutoff_positions)
-            
-# #             for cutoff in cutoff_positions:
-# #                 if strategy == 'expanding':
-# #                     train_start_idx = 0
-# #                 else:  # sliding
-# #                     train_start_idx = max(0, cutoff - train_window + 1)
-                
-# #                 for w in range(n_windows_per_train):
-# #                     test_start = cutoff + 1 + w * test_step
-# #                     test_end = test_start + h - 1
-# #                     if test_end >= n:
-# #                         break
-# #                     all_splits.append({
-# #                         'unique_id': uid,
-# #                         'train_start': dates[train_start_idx],
-# #                         'train_end': dates[cutoff],
-# #                         'test_start': dates[test_start],
-# #                         'test_end': dates[test_end]
-# #                     })
-    
-# #     return pd.DataFrame(all_splits)
-    
-    
-# # # import pandas as pd
-# # # import numpy as np
-# # # from joblib import Parallel, delayed
-
-
-# # # def make_cv_splits(
-# # #     df,
-# # #     h,
-# # #     step_size,
-# # #     train_window=None,
-# # #     strategy='expanding',
-# # #     n_windows_per_train=1,
-# # #     test_step=None,
-# # #     freq=None,
-# # #     id_col='unique_id',
-# # #     time_col='ds',
-# # #     target_col='y',
-# # #     min_data_length=10,
-# # #     cutoffs_df=None,
-# # #     n_jobs=1,
-# # # ):
-# # #     """
-# # #     Генерирует CV-окна для временных рядов в формате Nixtla (long format).
-    
-# # #     Поддерживает:
-# # #       - Любые колонки через id_col/time_col/target_col
-# # #       - Экзогенные переменные (игнорируются, но сохраняется структура)
-# # #       - Готовые cutoff'ы из utilsforecast
-# # #       - Параллелизацию по уникальным id
-# # #       - Минимальную длину ряда
-    
-# # #     Parameters
-# # #     ----------
-# # #     df : pd.DataFrame
-# # #         Данные в long-формате.
-# # #     h : int
-# # #         Горизонт прогноза (в шагах временной шкалы).
-# # #     step_size : int or pd.Timedelta
-# # #         Шаг между cutoff'ами.
-# # #     train_window : int, optional
-# # #         Размер обучающего окна. Обязателен для 'sliding' и 'fixed_train'.
-# # #     strategy : str, default='expanding'
-# # #         Одна из: 'expanding', 'sliding', 'fixed_train'.
-# # #     n_windows_per_train : int, default=1
-# # #         Сколько тестовых окон на один cutoff.
-# # #     test_step : int or pd.Timedelta, optional
-# # #         Шаг между тестовыми окнами. Если None → равен h.
-# # #     freq : str or pd.Timedelta, optional
-# # #         Частота временной шкалы (для datetime ds).
-# # #     id_col : str, default='unique_id'
-# # #         Колонка с идентификатором серии.
-# # #     time_col : str, default='ds'
-# # #         Колонка со временем.
-# # #     target_col : str, default='y'
-# # #         Колонка с целевой переменной (не используется, но проверяется наличие).
-# # #     min_data_length : int, default=10
-# # #         Минимальная длина ряда для обработки.
-# # #     cutoffs_df : pd.DataFrame, optional
-# # #         Готовые cutoff'ы с колонками [id_col, 'cutoff'].
-# # #         Если задан — игнорирует step_size и генерирует окна только для этих cutoff'ов.
-# # #     n_jobs : int, default=1
-# # #         Число параллельных процессов. -1 = все ядра.
-    
-# # #     Returns
-# # #     -------
-# # #     pd.DataFrame
-# # #         Таблица с колонками:
-# # #             [id_col, 'train_start', 'train_end', 'test_start', 'test_end']
-    
-# # #     Notes
-# # #     -----
-# # #     **Экзогенные переменные**: 
-# # #         Функция не использует их напрямую, но при использовании cutoffs_df
-# # #         вы можете передать дополнительные колонки (например, 'X_cols'),
-# # #         которые будут сохранены в выходном датафрейме.
-        
-# # #         Рекомендуемый workflow:
-# # #           1. Сгенерировать cutoff'ы с помощью этой функции
-# # #           2. Для каждого cutoff'а извлечь train/test данные с экзогенными переменными
-# # #           3. Обучить модель на train, оценить на test
-# # #     """
-# # #     # === Валидация входных данных ===
-# # #     required_cols = {id_col, time_col}
-# # #     if not required_cols.issubset(df.columns):
-# # #         raise ValueError(f"df must contain columns: {required_cols}")
-    
-# # #     allowed_strategies = {'expanding', 'sliding', 'fixed_train'}
-# # #     if strategy not in allowed_strategies:
-# # #         raise ValueError(
-# # #             f"strategy must be one of: {sorted(allowed_strategies)}. Got '{strategy}'"
-# # #         )
-    
-# # #     if df.empty:
-# # #         cols = [id_col, 'train_start', 'train_end', 'test_start', 'test_end']
-# # #         return pd.DataFrame(columns=cols)
-    
-# # #     # === Использование готовых cutoff'ов (если заданы) ===
-# # #     if cutoffs_df is not None:
-# # #         if 'cutoff' not in cutoffs_df.columns:
-# # #             raise ValueError("cutoffs_df must contain 'cutoff' column")
-# # #         if id_col not in cutoffs_df.columns:
-# # #             raise ValueError(f"cutoffs_df must contain '{id_col}' column")
-        
-# # #         # Группируем cutoff'ы по id
-# # #         cutoff_groups = cutoffs_df.groupby(id_col)['cutoff'].apply(list).to_dict()
-# # #         df_for_cutoffs = df.set_index([id_col, time_col])
-        
-# # #         def process_uid_with_cutoffs(uid):
-# # #             if uid not in cutoff_groups:
-# # #                 return []
-# # #             cutoffs = cutoff_groups[uid]
-# # #             if uid not in df_for_cutoffs.index.get_level_values(id_col):
-# # #                 return []
-            
-# # #             series = df_for_cutoffs.xs(uid, level=id_col).sort_index()
-# # #             dates = series.index.tolist()
-# # #             date_to_idx = {d: i for i, d in enumerate(dates)}
-# # #             results = []
-            
-# # #             for cutoff_date in cutoffs:
-# # #                 if cutoff_date not in date_to_idx:
-# # #                     continue
-# # #                 cutoff_idx = date_to_idx[cutoff_date]
-                
-# # #                 # Определяем train window
-# # #                 if strategy == 'expanding':
-# # #                     train_start_idx = 0
-# # #                 elif strategy == 'sliding':
-# # #                     if train_window is None:
-# # #                         raise ValueError("train_window required for 'sliding' with cutoffs")
-# # #                     train_start_idx = max(0, cutoff_idx - train_window + 1)
-# # #                 else:  # fixed_train
-# # #                     if train_window is None:
-# # #                         raise ValueError("train_window required for 'fixed_train' with cutoffs")
-# # #                     train_start_idx = 0
-# # #                     if cutoff_idx != train_window - 1:
-# # #                         continue  # пропускаем, если cutoff не соответствует фиксированному окну
-                
-# # #                 # Генерируем тестовые окна
-# # #                 for w in range(n_windows_per_train):
-# # #                     test_start_idx = cutoff_idx + 1 + w * (test_step if not isinstance(test_step, pd.Timedelta) else 1)
-# # #                     test_end_idx = test_start_idx + h - 1
-# # #                     if test_end_idx >= len(dates):
-# # #                         break
-                    
-# # #                     results.append({
-# # #                         id_col: uid,
-# # #                         'train_start': dates[train_start_idx],
-# # #                         'train_end': dates[cutoff_idx],
-# # #                         'test_start': dates[test_start_idx],
-# # #                         'test_end': dates[test_end_idx]
-# # #                     })
-# # #             return results
-        
-# # #         uids = cutoffs_df[id_col].unique()
-# # #         if n_jobs == 1:
-# # #             all_results = [r for uid in uids for r in process_uid_with_cutoffs(uid)]
-# # #         else:
-# # #             results_list = Parallel(n_jobs=n_jobs)(
-# # #                 delayed(process_uid_with_cutoffs)(uid) for uid in uids
-# # #             )
-# # #             all_results = [r for sublist in results_list for r in sublist]
-        
-# # #         return pd.DataFrame(all_results)
-    
-# # #     # === Автоматическая генерация cutoff'ов ===
-# # #     ds_sample = df[time_col].iloc[0]
-# # #     is_datetime = pd.api.types.is_datetime64_any_dtype(df[time_col])
-    
-# # #     # Конвертация step_size и test_step для datetime
-# # #     if is_datetime:
-# # #         if isinstance(step_size, (int, float)):
-# # #             if freq is None:
-# # #                 raise ValueError("Для datetime time_col требуется freq или step_size как Timedelta")
-# # #             step_size = pd.Timedelta(step_size, unit=freq) if isinstance(freq, str) else step_size * freq
-# # #         if test_step is not None and isinstance(test_step, (int, float)):
-# # #             if freq is None:
-# # #                 raise ValueError("Для datetime time_col требуется freq или test_step как Timedelta")
-# # #             test_step = pd.Timedelta(test_step, unit=freq) if isinstance(freq, str) else test_step * freq
-# # #         if test_step is None:
-# # #             test_step = pd.Timedelta(h, unit=freq) if freq else h
-# # #     else:
-# # #         if not isinstance(step_size, (int, np.integer)):
-# # #             raise ValueError("Для не-datetime time_col step_size должен быть целым числом")
-# # #         if test_step is None:
-# # #             test_step = h
-# # #         elif not isinstance(test_step, (int, np.integer)):
-# # #             raise ValueError("Для не-datetime time_col test_step должен быть целым числом")
-
-# # #     df_sorted = df[[id_col, time_col]].sort_values([id_col, time_col]).reset_index(drop=True)
-    
-# # #     def process_single_series(uid, group):
-# # #         dates = group[time_col].tolist()
-# # #         n = len(dates)
-        
-# # #         if n < min_data_length:
-# # #             return []
-        
-# # #         results = []
-        
-# # #         if strategy == 'fixed_train':
-# # #             if train_window is None:
-# # #                 raise ValueError("Для fixed_train нужен train_window")
-# # #             if train_window > n:
-# # #                 return []
-            
-# # #             train_start_idx = 0
-# # #             train_end_idx = train_window - 1
-# # #             current_test_start_idx = train_end_idx + 1
-            
-# # #             while current_test_start_idx + h - 1 < n:
-# # #                 for w in range(n_windows_per_train):
-# # #                     if is_datetime:
-# # #                         expected_test_start = dates[train_end_idx] + (w + 1) * test_step
-# # #                         try:
-# # #                             test_start_idx = next(i for i, d in enumerate(dates) if d >= expected_test_start)
-# # #                         except StopIteration:
-# # #                             break
-# # #                         test_end_idx = test_start_idx + h - 1
-# # #                         if test_end_idx >= n:
-# # #                             break
-# # #                     else:
-# # #                         test_start_idx = current_test_start_idx + w * test_step
-# # #                         test_end_idx = test_start_idx + h - 1
-# # #                         if test_end_idx >= n:
-# # #                             break
-                    
-# # #                     results.append({
-# # #                         id_col: uid,
-# # #                         'train_start': dates[train_start_idx],
-# # #                         'train_end': dates[train_end_idx],
-# # #                         'test_start': dates[test_start_idx],
-# # #                         'test_end': dates[test_end_idx]
-# # #                     })
-                
-# # #                 if is_datetime:
-# # #                     next_cutoff_date = dates[train_end_idx] + step_size
-# # #                     try:
-# # #                         current_test_start_idx = next(i for i, d in enumerate(dates) if d >= next_cutoff_date) + 1
-# # #                     except StopIteration:
-# # #                         break
-# # #                 else:
-# # #                     current_test_start_idx += step_size
-        
-# # #         else:
-# # #             # expanding / sliding
-# # #             min_train_len = train_window if strategy == 'sliding' else 1
-# # #             if n < min_train_len + h:
-# # #                 return []
-            
-# # #             test_step_int = test_step if not is_datetime else 1
-# # #             last_possible_idx = n - h - (n_windows_per_train - 1) * test_step_int - 1
-# # #             if last_possible_idx < min_train_len - 1:
-# # #                 return []
-            
-# # #             cutoff_positions = []
-# # #             pos = last_possible_idx
-# # #             while pos >= min_train_len - 1:
-# # #                 cutoff_positions.append(pos)
-# # #                 if is_datetime:
-# # #                     target_date = dates[pos] - step_size
-# # #                     candidates = [i for i, d in enumerate(dates[:pos+1]) if d <= target_date]
-# # #                     if not candidates:
-# # #                         break
-# # #                     pos = candidates[-1]
-# # #                 else:
-# # #                     pos -= step_size
-# # #                     if pos < min_train_len - 1:
-# # #                         break
-# # #             cutoff_positions = sorted(cutoff_positions)
-            
-# # #             for cutoff in cutoff_positions:
-# # #                 if strategy == 'expanding':
-# # #                     train_start_idx = 0
-# # #                 else:  # sliding
-# # #                     train_start_idx = max(0, cutoff - train_window + 1)
-                
-# # #                 for w in range(n_windows_per_train):
-# # #                     if is_datetime:
-# # #                         expected_test_start = dates[cutoff] + (w + 1) * test_step
-# # #                         try:
-# # #                             test_start_idx = next(i for i, d in enumerate(dates) if d >= expected_test_start)
-# # #                         except StopIteration:
-# # #                             break
-# # #                         test_end_idx = test_start_idx + h - 1
-# # #                         if test_end_idx >= n:
-# # #                             break
-# # #                     else:
-# # #                         test_start_idx = cutoff + 1 + w * test_step
-# # #                         test_end_idx = test_start_idx + h - 1
-# # #                         if test_end_idx >= n:
-# # #                             break
-                    
-# # #                     results.append({
-# # #                         id_col: uid,
-# # #                         'train_start': dates[train_start_idx],
-# # #                         'train_end': dates[cutoff],
-# # #                         'test_start': dates[test_start_idx],
-# # #                         'test_end': dates[test_end_idx]
-# # #                     })
-        
-# # #         return results
-    
-# # #     # === Параллелизация ===
-# # #     grouped = list(df_sorted.groupby(id_col))
-# # #     if n_jobs == 1:
-# # #         all_splits = [r for uid, group in grouped for r in process_single_series(uid, group)]
-# # #     else:
-# # #         results_list = Parallel(n_jobs=n_jobs)(
-# # #             delayed(process_single_series)(uid, group) for uid, group in grouped
-# # #         )
-# # #         all_splits = [r for sublist in results_list for r in sublist]
-    
-# # #     return pd.DataFrame(all_splits)
+#     if ret_styled:
+#         return styled.format("{:.2f}")  # Форматирование до 2 знаков (согласно вашим предпочтениям)
+#     else:
+#         return styled.data
