@@ -69,6 +69,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
 * http://www.stat.ucla.edu/~frederic/415/S23/tsa4.pdf
 * https://www.kaggle.com/code/konradb/ts-0-the-basics
+* 
 
 Какие то курсы
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
@@ -98,6 +99,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/valeman/awesome-conformal-prediction
 * https://github.com/thuml/Time-Series-Library
 * https://github.com/ritvikmath/Time-Series-Analysis
+* https://github.com/maximtrp/scikit-posthocs
 
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
