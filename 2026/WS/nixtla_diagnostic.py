@@ -9,6 +9,7 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.stats.diagnostic import acorr_ljungbox, het_breuschpagan
 from statsmodels.tsa.stattools import kpss
 import statsmodels.api as sm
+
 def plot_model_diagnostics(
     df_resid, 
     resid_col="resid", 
