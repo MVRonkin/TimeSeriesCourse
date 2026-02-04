@@ -11,9 +11,8 @@ import pandas as pd
 import numpy as np
 from statsforecast import StatsForecast
 from utilsforecast.evaluation import evaluate
-from typing import *
 from typing import List, Callable, Optional
-from scipy.stats import friedmanchisquare
+
 import matplotlib.pyplot as plt
 
    
@@ -224,186 +223,65 @@ def plot_cv_windows(
     plt.tight_layout()
     return fig, ax
 
-def plot_cv_metric(result, metric='mae', series_list=None, figsize=(12, 8),
-                   macro_mode=False, aggregation='metric', agg_method='mean',
-                   show_quantiles=True):
+def plot_cv_metric(result, metric='mae', series_list=None, figsize=(12, 8)):
     """
     Визуализация CV метрики:
-    - слева: динамика метрики/ранга по CV-окнам
-    - справа: распределение метрики/ранга (boxplot)
+    - слева: динамика метрики по CV-окнам
+    - справа: распределение метрики (boxplot)
     
     Параметры:
     ----------
     result : pd.DataFrame
-        Результат evaluate_cv() с колонками: metric, unique_id, cutoff и модели
+        Результат evaluate_cv() с MultiIndex: metric, unique_id, cutoff
+        и колонками — модели
     metric : str
         Метрика для визуализации ('mae', 'rmse', 'smape')
     series_list : list, optional
         Список временных рядов (unique_id). Если None — берутся все уникальные.
     figsize : tuple
         Размер фигуры
-    macro_mode : bool
-        Если True — показывать агрегированный график по всем рядам.
-        Если False — отдельные графики для каждого ряда.
-    aggregation : str
-        'metric' — агрегация значений метрики,
-        'rank'   — агрегация рангов моделей (лучшая модель = ранг 1)
-    agg_method : str
-        'mean' или 'median' для агрегации по рядам
-    show_quantiles : bool
-        Показывать горизонтальные линии 5% и 95% квантилей на boxplot
     """
-    import numpy as np
-    import matplotlib.pyplot as plt
-    
     df_clean = result.copy()
+    # df_clean = df_clean.reset_index()  # превращаем MultiIndex в колонки
     
     # Список уникальных рядов
     if series_list is None:
         series_list = sorted(df_clean['unique_id'].unique())
     
-    # Список моделей
+    # Список моделей (колонки после metric, unique_id, cutoff)
     model_cols = df_clean.columns.difference(['metric', 'unique_id', 'cutoff'])
-    n_models = len(model_cols)
     
-    # Подготовка данных для агрегации
-    metric_data = df_clean[df_clean['metric'] == metric].copy()
+    n_series = len(series_list)
+    fig, axes = plt.subplots(n_series, 2, figsize=figsize)
     
-    if macro_mode:
-        # ===== МАКРО-РЕЖИМ =====
-        n_rows = 1
-        fig, axes = plt.subplots(1, 2, figsize=figsize)
-        axes = [axes]  # для единообразия обращения axes[i][j]
-        fig.suptitle(f'Aggregated CV Results ({aggregation.upper()} mode)', 
-                     fontsize=14, fontweight='bold')
+    if n_series == 1:
+        axes = [axes]
+    
+    for i, series in enumerate(series_list):
+        data = df_clean[(df_clean['unique_id'] == series) & (df_clean['metric'] == metric)]
+        data = data.sort_values('cutoff')
+        windows = range(1, len(data) + 1)
         
-        if aggregation == 'rank':
-            # Ранжирование моделей для каждой комбинации (ряд, окно)
-            metric_data['window_id'] = metric_data.groupby(['unique_id']).cumcount() + 1
-            
-            # Вычисляем ранги для каждой строки (лучшая модель = ранг 1)
-            rank_rows = []
-            for _, row in metric_data.iterrows():
-                values = row[model_cols].astype(float)
-                ranks = values.rank(method='min', ascending=True)  # min для корректной обработки связей
-                rank_row = {
-                    'unique_id': row['unique_id'],
-                    'cutoff': row['cutoff'],
-                    'window_id': row['window_id']
-                }
-                rank_row.update({m: ranks[m] for m in model_cols})
-                rank_rows.append(rank_row)
-            
-            rank_df = pd.DataFrame(rank_rows)
-            
-            # Агрегация рангов по рядам для каждого окна
-            agg_df = rank_df.groupby('window_id')[model_cols].agg(agg_method).reset_index()
-            windows = agg_df['window_id'].values
-            
-            # Данные для boxplot: все ранги для всех окон и рядов
-            box_data = [rank_df[m].values for m in model_cols]
-            box_labels = model_cols.tolist()
-            
-            # Левый график: динамика среднего ранга
-            for model in model_cols:
-                axes[0][0].plot(windows, agg_df[model], label=model, marker='o')
-            axes[0][0].set_title(f'Average Rank over CV Windows ({agg_method})')
-            axes[0][0].set_ylabel('Average Rank')
-            axes[0][0].set_ylim(0.5, n_models + 0.5)  # фиксированный диапазон рангов
-            axes[0][0].legend()
-            axes[0][0].grid(True, linestyle='--', alpha=0.5)
-            axes[0][0].set_xlabel('CV Window Number')
-            
-            # Правый график: распределение рангов
-            bp = axes[0][1].boxplot(box_data, tick_labels=box_labels, patch_artist=True)
-            axes[0][1].set_title('Rank Distribution across Windows & Series')
-            axes[0][1].set_ylabel('Rank')
-            axes[0][1].set_ylim(0.5, n_models + 0.5)
-            axes[0][1].grid(True, linestyle='--', alpha=0.5)
-            axes[0][1].set_xlabel('Model')
-            
-            # Квантили для рангов (опционально)
-            if show_quantiles:
-                for i, m in enumerate(model_cols, 1):
-                    q5, q95 = np.percentile(rank_df[m].values, [5, 95])
-                    axes[0][1].hlines([q5, q95], i-0.3, i+0.3, colors='red', linestyles='dashed', alpha=0.7)
-                    axes[0][1].text(i, q95+0.15, f'95%: {q95:.2f}', ha='center', fontsize=8, color='red')
-                    axes[0][1].text(i, q5-0.15, f'5%: {q5:.2f}', ha='center', fontsize=8, color='red')
+        # Левый график: динамика по CV-окнам
+        for model in model_cols:
+            axes[i][0].plot(windows, data[model], label=model, marker='o')
+        axes[i][0].set_title(f'{series} - {metric.upper()} over windows')
+        axes[i][0].set_ylabel(metric.upper())
+        axes[i][0].legend()
+        axes[i][0].grid(True)
         
-        else:  # aggregation == 'metric'
-            # Агрегация метрики по рядам для каждого окна
-            metric_data['window_id'] = metric_data.groupby(['unique_id']).cumcount() + 1
-            agg_df = metric_data.groupby('window_id')[model_cols].agg(agg_method).reset_index()
-            windows = agg_df['window_id'].values
-            
-            # Данные для boxplot: все значения метрики для всех окон и рядов
-            box_data = [metric_data[m].values for m in model_cols]
-            box_labels = model_cols.tolist()
-            
-            # Левый график: динамика агрегированной метрики
-            for model in model_cols:
-                axes[0][0].plot(windows, agg_df[model], label=model, marker='o')
-            axes[0][0].set_title(f'{metric.upper()} over CV Windows ({agg_method})')
-            axes[0][0].set_ylabel(metric.upper())
-            axes[0][0].legend()
-            axes[0][0].grid(True, linestyle='--', alpha=0.5)
-            axes[0][0].set_xlabel('CV Window Number')
-            
-            # Правый график: распределение метрики
-            bp = axes[0][1].boxplot(box_data, tick_labels=box_labels, patch_artist=True)
-            axes[0][1].set_title(f'{metric.upper()} Distribution across Windows & Series')
-            axes[0][1].set_ylabel(metric.upper())
-            axes[0][1].grid(True, linestyle='--', alpha=0.5)
-            axes[0][1].set_xlabel('Model')
-            
-            # Квантили 5% и 95%
-            if show_quantiles:
-                for i, m in enumerate(model_cols, 1):
-                    q5, q95 = np.percentile(metric_data[m].values, [5, 95])
-                    axes[0][1].hlines([q5, q95], i-0.3, i+0.3, colors='red', linestyles='dashed', alpha=0.7)
-                    axes[0][1].text(i, q95*1.05, f'95%: {q95:.2f}', ha='center', fontsize=8, color='red')
-                    axes[0][1].text(i, q5*0.95, f'5%: {q5:.2f}', ha='center', fontsize=8, color='red')
-        
-        # Поворот меток моделей
-        plt.setp(axes[0][1].xaxis.get_majorticklabels(), rotation=45, ha='right')
-        
-    else:
-        # ===== РЕЖИМ ПО РЯДАМ =====
-        n_series = len(series_list)
-        fig, axes = plt.subplots(n_series, 2, figsize=figsize)
-        if n_series == 1:
-            axes = [axes]
-        else:
-            axes = axes.tolist()
-        
-        for i, series in enumerate(series_list):
-            data = metric_data[metric_data['unique_id'] == series].copy()
-            data = data.sort_values('cutoff')
-            windows = range(1, len(data) + 1)
-            
-            # Левый график: динамика метрики
-            for model in model_cols:
-                axes[i][0].plot(windows, data[model], label=model, marker='o')
-            axes[i][0].set_title(f'{series} - {metric.upper()} over windows')
-            axes[i][0].set_ylabel(metric.upper())
-            axes[i][0].legend()
-            axes[i][0].grid(True, linestyle='--', alpha=0.5)
-            
-            # Правый график: распределение метрики
-            box_data = [data[m].values for m in model_cols]
-            axes[i][1].boxplot(box_data, tick_labels=model_cols)
-            axes[i][1].set_title(f'{series} - {metric.upper()} distribution')
-            axes[i][1].set_ylabel(metric.upper())
-            axes[i][1].grid(True, linestyle='--', alpha=0.5)
-            plt.setp(axes[i][1].xaxis.get_majorticklabels(), rotation=45, ha='right')
-        
-        # Общие подписи осей X
-        axes[-1][0].set_xlabel('CV Window Number')
-        axes[-1][1].set_xlabel('Model')
+        # Правый график: boxplot распределения
+        box_data = [data[m].values for m in model_cols]
+        axes[i][1].boxplot(box_data, tick_labels=model_cols)
+        axes[i][1].set_title(f'{series} - {metric.upper()} distribution')
+        axes[i][1].set_ylabel(metric.upper())
+        axes[i][1].grid(True)
+    
+    # Подписи осей X
+    axes[-1][0].set_xlabel('CV Window Number')
+    axes[-1][1].set_xlabel('Model')
     
     plt.tight_layout()
-    if macro_mode:
-        plt.subplots_adjust(top=0.88)  # место для общего заголовка
     plt.show()
 
 
@@ -554,7 +432,7 @@ def plot_cv_ranks(eval_df, metrics=None, figsize=(10, 4), error_type='iqr'):
 def plot_cv_series(
     df_original,
     cv_df,
-    cutoffs = None,
+    cutoffs,
     series_id='Consumption',
     model=None,  # ← теперь может быть None или 'all'
     level=None,
@@ -590,9 +468,7 @@ def plot_cv_series(
         }
         models = {m for m in models if m and m not in base_set}
         return sorted(models)
-        
-    if not cutoffs: cutoffs = cv_df['cutoff'].unique()
-    
+
     n_windows = len(cutoffs)
     figsize = (figsize_per_plot[0], n_windows * figsize_per_plot[1])
     fig, axes = plt.subplots(n_windows, 1, figsize=figsize, sharex=True)
@@ -791,92 +667,6 @@ def plot_cv_metrics_boxplots(eval_df, metrics=None, models=None, figsize_per_row
     plt.tight_layout()
     plt.show()
 
-from scipy.stats import friedmanchisquare
-from scipy.stats import wilcoxon
-from statsmodels.stats.multitest import multipletests
-
-
-from scipy.stats import rankdata
-import numpy as np
-from typing import Optional
-
-def rank_biserial_from_pairs(
-    x: np.ndarray,
-    y: np.ndarray,
-    zero_method: str = 'wilcox'
-) -> float:
-    """
-    Вычисляет rank-biserial correlation для парных выборок (эффект-размер для Wilcoxon signed-rank test).
-    
-    Формула:
-        r = (T⁺ - T⁻) / (n(n+1)/2)
-    где:
-        T⁺ — сумма рангов положительных разностей,
-        T⁻ — сумма рангов отрицательных разностей,
-        n — количество ненулевых разностей.
-    
-    Параметры:
-    ----------
-    x, y : array-like
-        Парные наблюдения (должны иметь одинаковую длину)
-    zero_method : str
-        'wilcox' — исключить нулевые разности (по умолчанию, как в scipy.wilcoxon)
-        'pratt'  — включить нулевые разности с рангом 0 (не реализовано)
-    
-    Возвращает:
-    -----------
-    r : float
-        Rank-biserial correlation ∈ [-1, 1]
-        np.nan если нет ненулевых разностей
-    
-    Примеры:
-    --------
-    >>> rank_biserial_from_pairs([1,2,3], [0,0,0])  # все разности положительны
-    1.0
-    >>> rank_biserial_from_pairs([0,0,0], [1,2,3])  # все разности отрицательны
-    -1.0
-    >>> rank_biserial_from_pairs([1,2,3], [3,2,1])  # симметричные разности
-    0.0
-    """
-    x = np.asarray(x)
-    y = np.asarray(y)
-    
-    if x.shape != y.shape:
-        raise ValueError("x и y должны иметь одинаковую форму")
-    
-    # Шаг 1: вычисляем разности
-    d = x - y
-    
-    # Шаг 2: обработка нулевых разностей
-    if zero_method == 'wilcox':
-        d = d[d != 0]  # исключаем нули (поведение по умолчанию в scipy.wilcoxon)
-    elif zero_method == 'pratt':
-        # Pratt method требует специальной обработки (ранг 0 для нулей),
-        # но для простоты и согласованности с wilcoxon используем только 'wilcox'
-        raise NotImplementedError("zero_method='pratt' не реализован")
-    else:
-        raise ValueError("zero_method должен быть 'wilcox' или 'pratt'")
-    
-    n = len(d)
-    if n == 0:
-        return np.nan
-    
-    # Шаг 3: ранжирование абсолютных разностей (с обработкой связей через средние ранги)
-    abs_d = np.abs(d)
-    ranks = rankdata(abs_d, method='average')  # сохраняет сумму рангов = n(n+1)/2 даже при связях
-    
-    # Шаг 4: разделение на положительные и отрицательные ранги
-    T_plus = np.sum(ranks[d > 0]) if np.any(d > 0) else 0.0
-    T_minus = np.sum(ranks[d < 0]) if np.any(d < 0) else 0.0
-    
-    # Шаг 5: вычисление rank-biserial correlation
-    total_rank_sum = n * (n + 1) / 2.0
-    r = (T_plus - T_minus) / total_rank_sum
-    
-    # Численная стабилизация (защита от ошибок округления)
-    r = np.clip(r, -1.0, 1.0)
-    
-    return float(r)
 def bootstrap_rank_biserial_ci(
     x: np.ndarray,
     y: np.ndarray,
@@ -905,7 +695,9 @@ def bootstrap_rank_biserial_ci(
     return (
         np.quantile(boot_stats, alpha / 2),
         np.quantile(boot_stats, 1 - alpha / 2),
-    )    
+    )
+    
+
 def cv_model_stats(
     df: pd.DataFrame,
     metric_name: Optional[List[str]] = None,
@@ -1101,4 +893,94 @@ def cv_model_stats(
             else:
                 print('-'*70)
                 print("✗ Значимых различий нет")
+
     return results
+
+
+    
+# def evaluate_cv(
+#     crossvalidation_df,
+#     metrics,
+#     model_names,
+#     train_df = None,
+#     target_col='y',
+#     level=None,
+#     ts_aggregate=True,
+#     cutoff_aggregate=True,
+#     ret_styled = True
+# ):
+#     """
+#     Оценка результатов кросс-валидации с гибкой агрегацией.
+    
+#     Параметры:
+#     ----------
+#     crossvalidation_df : pd.DataFrame
+#         Данные в лонг-формате с колонкой 'cutoff'     
+#     metrics : list
+#         Список функций метрик (например, [smape, mae, rmse])
+#     model_names : list
+#         Список названий моделей
+#     train_df : pd.DataFrame
+#         Данные для scaled метрик  
+#     target_col : str, default='y'
+#         Название колонки с целевой переменной
+#     level : float or None, default=None
+#         Уровень для квантильных прогнозов
+#     ts_aggregate : bool, default=True
+#         Если True — агрегировать по временным рядам (уникальным unique_id)
+#     cutoff_aggregate : bool, default=True
+#         Если True — агрегировать по окнам кросс-валидации (cutoff)
+#     ret_styled: bool, default=True
+#         Если True — стильная таблица на выходе
+#     Возвращает:
+#     -----------
+#     pd.io.formats.style.Styler
+#         Стилизованный датафрейм с метриками
+#     """
+#     evaluations = []
+#     cutoffs = crossvalidation_df['cutoff'].unique()
+    
+#     for c in cutoffs:
+#         df_cv = crossvalidation_df.query('cutoff == @c')
+#         evaluation = evaluate(
+#             df=df_cv,
+#             metrics=metrics,
+#             models=model_names,
+#             level=level,
+#             train_df = train_df,
+#             target_col=target_col
+#         )
+#         evaluation['cutoff'] = c  # сохраняем информацию об окне
+#         evaluations.append(evaluation)
+    
+#     evaluations = pd.concat(evaluations, ignore_index=True)
+    
+#     # Определяем уровни группировки
+#     group_cols = ['metric']
+#     if not ts_aggregate and 'unique_id' in evaluations.columns:
+#         group_cols.append('unique_id')
+#     if not cutoff_aggregate:
+#         group_cols.append('cutoff')
+    
+#     # Агрегация
+#     if len(group_cols) > 0:
+#         evaluations = evaluations.groupby(group_cols).mean(numeric_only=True)
+#     else:
+#         evaluations = evaluations.mean(numeric_only=True).to_frame().T
+    
+#     # Стилизация с учётом структуры индекса
+#     if isinstance(evaluations.index, pd.MultiIndex):
+#         # Для мультииндекса применяем градиент по строкам
+#         styled = evaluations.style.background_gradient(
+#             cmap='RdYlGn_r', 
+#             axis=1,
+#             vmin=evaluations.min().min(),
+#             vmax=evaluations.max().max()
+#         )
+#     else:
+#         styled = evaluations.style.background_gradient(cmap='RdYlGn_r', axis=1)
+    
+#     if ret_styled:
+#         return styled.format("{:.2f}")  # Форматирование до 2 знаков (согласно вашим предпочтениям)
+#     else:
+#         return styled.data

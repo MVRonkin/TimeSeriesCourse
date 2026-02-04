@@ -86,7 +86,8 @@ def plot_model_diagnostics(
     axes[0, 0].set_title(kpss_txt)
     axes[0, 0].set_ylabel('Остатки')
     axes[0, 0].grid(True, linestyle='--', alpha=0.5)
-
+    axes[0, 0].tick_params(axis='x', rotation=45)
+    
     # [0,1] — ACF + Ljung-Box
     plot_acf(resid, ax=axes[0, 1], zero=False, auto_ylims=True)
     axes[0, 1].set_title(f'ACF (Ljung-Box p={lb_pval:.3f})')
