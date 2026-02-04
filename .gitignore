@@ -168,3 +168,26 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/.ipynb_checkpoints/04 - StatForecast_Models_Diagnostics-checkpoint.ipynb
 2026/WS/.ipynb_checkpoints/04 - StatForecast_Models_Diagnostics-checkpoint.ipynb
 >>>>>>> 8fdeffb7b1e2a9f897d1495b05d2eba4ab958277
+2026/WS/.ipynb_checkpoints/00 Моделирование временных рядов.ipynb
+2026/WS/.ipynb_checkpoints/01 - Визуализация и предварительная работа с данными .ipynb
+2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis.ipynb
+2026/WS/.ipynb_checkpoints/021 - AutoArimaProphet adapter.ipynb
+2026/WS/.ipynb_checkpoints/021 - Prophet adapter.ipynb
+2026/WS/.ipynb_checkpoints/03 - StatForecast_DSModels(ARIMA).ipynb
+2026/WS/.ipynb_checkpoints/04-NixtlaDiagnostics.ipynb
+2026/WS/.ipynb_checkpoints/05 - Advanced in Forecast.ipynb
+2026/WS/.ipynb_checkpoints/06 - ML forecast.ipynb
+2026/WS/.ipynb_checkpoints/07 anomaly_detect_TS.ipynb
+2026/WS/.ipynb_checkpoints/08 - предсказание значений ВР с DL.ipynb
+2026/WS/.ipynb_checkpoints/09  Классификация в SKTime.ipynb
+2026/WS/.ipynb_checkpoints/09 - 2 TSAI_ВВедение.ipynb
+2026/WS/.ipynb_checkpoints/14 - StatForecast_Models_Diagnostics (1).ipynb
+2026/WS/.ipynb_checkpoints/bootstrap_intervals.py
+2026/WS/.ipynb_checkpoints/cv_nixtla.py
+2026/WS/.ipynb_checkpoints/de_data.csv
+2026/WS/.ipynb_checkpoints/de_hourly_power_and_weather.csv
+2026/WS/.ipynb_checkpoints/nixtla_diagnostic.py
+2026/WS/.ipynb_checkpoints/OPDS_DE_EDA.csv
+2026/WS/.ipynb_checkpoints/prophet_adapter.py
+2026/WS/.ipynb_checkpoints/TSC_Nixtla_augmentation.py
+2026/WS/.ipynb_checkpoints/TSC_Nixtla_dump.py
