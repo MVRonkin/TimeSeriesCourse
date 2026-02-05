@@ -52,6 +52,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) - полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [прекрасные туториалы skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) / [GitHub](https://github.com/skforecast/skforecast/tree/master/docs) / [Mirror](https://cienciadedatos.net/en/forecasting-python)
+* [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
 
 
 доп литература 
@@ -69,9 +70,12 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
 * http://www.stat.ucla.edu/~frederic/415/S23/tsa4.pdf
 * https://www.kaggle.com/code/konradb/ts-0-the-basics
+* https://github.com/ajitsingh98/Time-Series-Analysis-and-Forecasting-with-Python
+* https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
+* https://www.causalmlbook.com/time-series-forecasting.html
+* https://github.com/USTCAGI/Awesome-Papers-Time-Series-Forecasting
 
 Какие то курсы
-* https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
 * https://github.com/aromanenko/ATSF/tree/main
 * https://github.com/gheisenberg/TSF
@@ -87,6 +91,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.statsmodels.org/stable/tsa.html / https://www.statsmodels.org/stable/user-guide.html#time-series-analysis
 * https://unit8co.github.io/darts/
 * https://lavinei.github.io/pybats/
+* https://github.com/Y-Research-SBU/TimeSeriesScientist/tree/main
 
 * [25 years of open source forecasting software 2025](https://robjhyndman.com/seminars/osfs25.html)
 
@@ -98,6 +103,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/valeman/awesome-conformal-prediction
 * https://github.com/thuml/Time-Series-Library
 * https://github.com/ritvikmath/Time-Series-Analysis
+* 
 
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
@@ -119,3 +125,11 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://neuralprophet.com/tutorials/index.html
 * https://skforecast.org/0.19.1/examples/examples_english.html
 * https://readmedium.com/bayesian-time-series-forecasting-in-python-with-the-ubers-orbit-package-1d3b7ff482dd
+* https://github.com/aangelopoulos/conformal-prediction/tree/main
+* https://towardsdatascience.com/uncertainty-quantification-in-time-series-forecasting-c9599d15b08b/
+* https://readmedium.com/time-series-forecasting-with-conformal-prediction-intervals-scikit-learn-is-all-you-need-4b68143a027a
+* https://github.com/cerlymarco/MEDIUM_NoteBook
+* https://github.com/cerlymarco/tspiral
+* https://juanitorduz.github.io/tsb_numpyro/ https://juanitorduz.github.io/croston_numpyro/
+* https://github.com/valeman/Transformers_And_LLM_Are_What_You_Dont_Need
+* https://github.com/cuge1995/awesome-time-series
