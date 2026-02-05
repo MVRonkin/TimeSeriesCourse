@@ -52,6 +52,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) - полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [прекрасные туториалы skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) / [GitHub](https://github.com/skforecast/skforecast/tree/master/docs) / [Mirror](https://cienciadedatos.net/en/forecasting-python)
+* [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
 
 
 доп литература 
@@ -69,9 +70,10 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.analyticsvidhya.com/blog/2015/12/complete-tutorial-time-series-modeling/
 * http://www.stat.ucla.edu/~frederic/415/S23/tsa4.pdf
 * https://www.kaggle.com/code/konradb/ts-0-the-basics
+* https://github.com/ajitsingh98/Time-Series-Analysis-and-Forecasting-with-Python
+* https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 
 Какие то курсы
-* https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
 * https://github.com/aromanenko/ATSF/tree/main
 * https://github.com/gheisenberg/TSF
@@ -119,3 +121,4 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://neuralprophet.com/tutorials/index.html
 * https://skforecast.org/0.19.1/examples/examples_english.html
 * https://readmedium.com/bayesian-time-series-forecasting-in-python-with-the-ubers-orbit-package-1d3b7ff482dd
+* https://github.com/aangelopoulos/conformal-prediction/tree/main
