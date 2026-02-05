@@ -128,4 +128,5 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://readmedium.com/time-series-forecasting-with-conformal-prediction-intervals-scikit-learn-is-all-you-need-4b68143a027a
 * https://github.com/cerlymarco/MEDIUM_NoteBook
 * https://github.com/cerlymarco/tspiral
-* https://juanitorduz.github.io/tsb_numpyro/ https://juanitorduz.github.io/croston_numpyro/ 
+* https://juanitorduz.github.io/tsb_numpyro/ https://juanitorduz.github.io/croston_numpyro/
+* https://github.com/valeman/Transformers_And_LLM_Are_What_You_Dont_Need
