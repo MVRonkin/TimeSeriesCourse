@@ -103,6 +103,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/valeman/awesome-conformal-prediction
 * https://github.com/thuml/Time-Series-Library
 * https://github.com/ritvikmath/Time-Series-Analysis
+* 
 
 
 Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
@@ -131,3 +132,4 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/cerlymarco/tspiral
 * https://juanitorduz.github.io/tsb_numpyro/ https://juanitorduz.github.io/croston_numpyro/
 * https://github.com/valeman/Transformers_And_LLM_Are_What_You_Dont_Need
+* https://github.com/cuge1995/awesome-time-series
