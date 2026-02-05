@@ -91,6 +91,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://www.statsmodels.org/stable/tsa.html / https://www.statsmodels.org/stable/user-guide.html#time-series-analysis
 * https://unit8co.github.io/darts/
 * https://lavinei.github.io/pybats/
+* https://github.com/Y-Research-SBU/TimeSeriesScientist/tree/main
 
 * [25 years of open source forecasting software 2025](https://robjhyndman.com/seminars/osfs25.html)
 
