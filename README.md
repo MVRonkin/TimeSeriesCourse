@@ -124,3 +124,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://skforecast.org/0.19.1/examples/examples_english.html
 * https://readmedium.com/bayesian-time-series-forecasting-in-python-with-the-ubers-orbit-package-1d3b7ff482dd
 * https://github.com/aangelopoulos/conformal-prediction/tree/main
+* https://towardsdatascience.com/uncertainty-quantification-in-time-series-forecasting-c9599d15b08b/
+* https://readmedium.com/time-series-forecasting-with-conformal-prediction-intervals-scikit-learn-is-all-you-need-4b68143a027a
+* https://github.com/cerlymarco/MEDIUM_NoteBook
+* https://github.com/cerlymarco/tspiral
