@@ -73,6 +73,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/ajitsingh98/Time-Series-Analysis-and-Forecasting-with-Python
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://www.causalmlbook.com/time-series-forecasting.html
+* https://github.com/USTCAGI/Awesome-Papers-Time-Series-Forecasting
 
 Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
