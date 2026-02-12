@@ -48,6 +48,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
 
 Основная доп литература 
+* [Блог введение в анализ временных рядов](https://www.dmitrymakarov.ru/intro/time-series/)
 * [Bianchi F M Time series analysis with Python](https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#) [GitHub](https://github.com/FilippoMB/python-time-series-handbook / ) -  простое Pythonic Way  изложение классического моделирования ВР
 * [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) - полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
@@ -74,6 +75,8 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/youssefHosni/Hands-On-Time-Series-Analysis-with-Python
 * https://www.causalmlbook.com/time-series-forecasting.html
 * https://github.com/USTCAGI/Awesome-Papers-Time-Series-Forecasting
+* https://chaos.phys.msu.ru/loskutov/PDF/Lectures_time_series_analysis.pdf
+* https://lib.ulstu.ru/venec/disk/2022/6.pdf
 
 Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
