@@ -46,6 +46,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [Nixtla blog github](https://github.com/Nixtla/nixtla_blog_examples/tree/main) и [тут](https://github.com/Nixtla/transfer-learning-time-series/tree/main/nbs)
 * [Blog ODS TSA](https://habr.com/ru/companies/ods/articles/327242/), [GitHub Ru](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_russian/topic09_time_series), [GitHub En](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_english/topic09_time_series)
 * [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
+* [Machine Learning for Time Series (Master MVA)](https://www.laurentoudre.fr/ast.html)
 
 Основная доп литература 
 * [Блог введение в анализ временных рядов](https://www.dmitrymakarov.ru/intro/time-series/)
