@@ -1,5 +1,7 @@
-Материалы курса представлены в репозитории 
+# Материалы текущей версии курса представлены в репозитории 
 https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026 
+
+<details>
 Материалы состоят 
 
 1.	из лекционных презентаций по следующим темам <ul>
@@ -32,12 +34,71 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 <li>2.9.	Решение задач классификации ВР (доп. Раздел).</li>
 </ul>
 
-3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md 
+3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md
+</details>
 
-4.	материалов контрольных работ и тестов.
+# Анализ временных рядов
+
+## Модуль 1 - Основные понятия предмета анализ временных рядов
+
+| Занятие | Тема | Материалы |
+|---------|------|-----------|
+| Лекция 1 | Введение в АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/01-1%20%D0%92%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B2%20%D0%90%D0%92%D0%A0.pptx) |
+| Лекция 1 | Модели ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/01-2%20%D0%9C%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8%20%D0%92%D0%A0%20%D0%B8%20%D0%BF%D0%BE%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8.pptx) |
+| Лекция 2 | Статистические свойства ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/02-1%20%D0%A1%D1%82%D0%B0%D1%82%D0%B8%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D1%81%D0%B2%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%B0%20%D0%92%D0%A0%20.pptx) |
+| Лекция 2 | Разложение ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/02-2%20%D0%A0%D0%B0%D0%B7%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B8%20%D0%BD%D0%B0%D0%B8%D0%B2%D0%BD%D0%BE%D0%B5%20%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B5.pptx) |
+| Практика 1 | EDA и визуализация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/01%20-%20%D0%92%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B4%D0%B2%D0%B0%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%20%D1%81%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8%20.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/01%20-%20%D0%92%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B4%D0%B2%D0%B0%D1%80%D0%B8%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%20%D1%81%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%BC%D0%B8%20.ipynb) |
+
+## Модуль 2 - Предсказания временных рядов на основе статистических моделей
+
+| Занятие | Тема | Материалы |
+|---------|------|-----------|
+| Лекция 3 | Методы экспоненциального сглаживания | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/03-1%20%D0%AD%D0%BA%D1%81%D0%BF%D0%BE%D0%BD%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5%20%D1%81%D0%B3%D0%BB%D0%B0%D0%B6%D0%B8%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B8%20%D0%BF%D1%80%D0%BE%D1%84%D0%B5%D1%82.pptx) |
+| Лекция 3 | Метрики АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/03-2%20%D0%9C%D0%B5%D1%82%D1%80%D0%B8%D0%BA%D0%B8%20%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%20%D0%92%D0%A0.pptx) |
+| Практика 2 | Базовые методы предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/02%20-%20StatForecast_Intro_TS_Analysis.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/02%20-%20StatForecast_Intro_TS_Analysis.ipynb) |
+| Лекция 4 | ARIMA | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/04-1%20ARIMA.pptx) |
+| Лекция 4 | Анализ остатков предсказания | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/04-2%20%20%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%20%D0%BD%D0%B5%D0%B2%D1%8F%D0%B7%D0%BE%D0%BA%20%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B9%20%D0%92%D0%A0.pptx) |
+| Практика 3 | ARIMA | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/03%20-%20StatForecast_DSModels(ARIMA).ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/03%20-%20StatForecast_DSModels(ARIMA).ipynb) |
+| Практика 4 | Диагностика ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/04-NixtlaDiagnostics.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/04-NixtlaDiagnostics.ipynb) |
+
+## Модуль 3 - Использование машинного обучения в задачах анализа временных рядов
+
+| Занятие | Тема | Материалы |
+|---------|------|-----------|
+| Лекция 5 | Методы машинного обучения для предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/05-1%20%D0%9C%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%20%D0%BC%D0%B0%D1%88%D0%B8%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BE%D0%B1%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%BB%D1%8F%20%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%20%D0%92%D0%A0.pptx) |
+| Лекция 5 | Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/05-2%20%D0%9E%D1%86%D0%B5%D0%BD%D0%BA%D0%B0%20%D0%BD%D0%B0%D0%B4%D0%B5%D0%B6%D0%BD%D0%BE%D1%81%D1%82%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B9%20%D0%92%D0%A0.pptx) |
+| Практика 5 | ВР Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/05%20-%20Advanced%20in%20Forecast.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/05%20-%20Advanced%20in%20Forecast.ipynb) |
+| Практика 6 | ML предсказание | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/06%20-%20ML%20forecast.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/06%20-%20ML%20forecast.ipynb) |
+| Лекция 6 | Многомерные ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md) |
+| Лекция 6 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/06-2%20%D0%9E%D0%B1%D0%BD%D0%B0%D1%80%D1%83%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B0%D0%BD%D0%BE%D0%BC%D0%B0%D0%BB%D0%B8%D0%B9.pptx) |
+| Практика 7 | Обнаружение аномалий и другие задачи АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/07%20anomaly_detect_TS.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/07%20anomaly_detect_TS.ipynb) |
+
+## Модуль 4 - Использование искусственных нейронных сетей глубокого обучения в задачах анализа временных рядов
+
+| Занятие | Тема | Материалы |
+|---------|------|-----------|
+| Лекция 7 | Полносвязные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/07-1%20MLP.pptx) |
+| Лекция 7 | Рекуррентные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/07-2%20RNN.pptx) |
+| Лекция 8 | Архитектуры - трансфомеры | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/07-3%20Transformers.pptx) |
+| Практика 8 | Предсказания с использованием нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/08%20-%20%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B9%20%D0%92%D0%A0%20%D1%81%20DL.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/08%20-%20%D0%BF%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B9%20%D0%92%D0%A0%20%D1%81%20DL.ipynb) |
+
+## Дополнительные темы
+
+| Занятие | Тема | Материалы |
+|---------|------|-----------|
+| Практика | Моделирование ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/00%20%D0%9C%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D1%80%D1%8F%D0%B4%D0%BE%D0%B2.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/00%20%D0%9C%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85%20%D1%80%D1%8F%D0%B4%D0%BE%D0%B2.ipynb) |
+| Лекция | Классификация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/09%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%92%D0%A0.pptx) |
+| Практика | Data Driven Классификация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/09%20%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B2%20SKTime.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/09%20%20%D0%9A%D0%BB%D0%B0%D1%81%D1%81%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B2%20SKTime.ipynb) |
+| Практика | Deep Learning Классификация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/09%20-%202%20TSAI_%D0%92%D0%92%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/2026/WS/09%20-%202%20TSAI_%D0%92%D0%92%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5.ipynb) |
+| Лекция | Непараметрические методы АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/10%20%D0%9D%D0%B5%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D1%81%20%D0%92%D0%A0.pptx) |
+
+## ИТОГОВЫЙ КОНТРОЛЬ
+
+**Основной репозиторий курса:** [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md)
 
 
-литература:
+# Литература
+## Основная литература:
 * [Rob J H Forecasting: Principles and Practice, the Pythonic Way](https://otexts.com/fpppy/) - основной учебник
 * [Rob J H and G Athanasopoulos Forecasting: Principles and Practice (3rd ed)](https://otexts.com/fpp3/) - расширенное описание глав, посвященных класическому АВР
 * [Nixtla statsforecas](https://nixtlaverse.nixtla.io/statsforecast/index.html) и  [GitHub документация](https://github.com/Nixtla/statsforecast/tree/main/nbs/docs) - основной фреймворк по классике, [GitHub docs2](https://github.com/Nixtla/statsforecast/tree/main/docs), [GitHub Experiments](https://github.com/Nixtla/statsforecast/tree/main/experiments)
@@ -48,7 +109,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
 * [Machine Learning for Time Series (Master MVA)](https://www.laurentoudre.fr/ast.html)
 
-Основная доп литература 
+## Также рекомендуемая литература 
 * [Блог введение в анализ временных рядов](https://www.dmitrymakarov.ru/intro/time-series/)
 * [Bianchi F M Time series analysis with Python](https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#) 
 [GitHub](https://github.com/FilippoMB/python-time-series-handbook /) -  простое Pythonic Way  изложение классического моделирования ВР
@@ -57,8 +118,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [прекрасные туториалы skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) / [GitHub](https://github.com/skforecast/skforecast/tree/master/docs) / [Mirror](https://cienciadedatos.net/en/forecasting-python)
 * [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
 
-
-доп литература 
+##  Дополнительная литература 
 * [Forecasting and Analytics with the Augmented Dynamic Adaptive Model (ADAM)](https://openforecast.org/adam/)
 * https://clauswilke.com/dataviz/ 
 * https://github.com/M-3LAB/awesome-industrial-anomaly-detection
@@ -80,7 +140,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://chaos.phys.msu.ru/loskutov/PDF/Lectures_time_series_analysis.pdf
 * https://lib.ulstu.ru/venec/disk/2022/6.pdf
 
-Какие то курсы
+## Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
 * https://github.com/aromanenko/ATSF/tree/main
 * https://github.com/gheisenberg/TSF
@@ -89,7 +149,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/j-adamczyk/ml_time_series_forecasting_course/
 * https://github.com/trainindata/feature-engineering-for-time-series-forecasting/
 
-Инструменты универсальные и предсказания
+## Инструменты универсальные и предсказания
 * https://www.sktime.net/en/stable/
 * https://skforecast.org/
 * https://nixtlaverse.nixtla.io/statsforecast/index.html /https://github.com/Nixtla/statsforecast
@@ -100,7 +160,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 
 * [25 years of open source forecasting software 2025](https://robjhyndman.com/seminars/osfs25.html)
 
-Инструменты TSC
+## Инструменты TSC
 * https://aeon-toolkit.org/
 * https://timeseriesai.github.io/tsai/
 * https://tsfel.readthedocs.io/
@@ -111,14 +171,14 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * 
 
 
-Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
+## Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
 * https://github.com/agpenas/tstrends
 * https://tom-doerr.github.io/repo_posts/2025/04/26/Nixtla-statsforecast.html
 
 * https://github.com/thekimk/All-About-Time-Series-Analysis/
 
-Тутроиалы
+## Тутроиалы
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
 * https://github.com/sktime/python_brasil_2025 
 * https://github.com/sktime/sktime-workshop-pycon-colombia-2025/tree/main/notebooks
