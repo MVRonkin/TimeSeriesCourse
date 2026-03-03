@@ -29,8 +29,6 @@ from utilsforecast.evaluation import evaluate
 
 import re
 
-
-
 def extract_model_names(df, base_cols= ['unique_id', 'ds', 'y', 'cutoff']):
     """
     Извлекает уникальные названия моделей из колонок DataFrame.
