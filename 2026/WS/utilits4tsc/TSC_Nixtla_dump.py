@@ -63,53 +63,55 @@ def extract_model_names(df, base_cols= ['unique_id', 'ds', 'y', 'cutoff']):
     # Удаляем пустые строки и базовые колонки (на случай артефактов)
     models = {m for m in models if m and m not in base_set}    
     return sorted(models)
-    
 
-def plt_style_GOST(fig_size = (12, 2.0)):
-    plt.rcParams.update({
-        # ШРИФТ
-        "font.family": "serif",
-        "font.serif": ["Times New Roman", "Times"],
-        "font.size": 11,                      # ГОСТ: 10–12 pt
+def n_step_ahead_forecasting(model, df, h, n_windows, refit=False):
+    """
+    Генерирует n-step-ahead прогнозы на исторических данных (Backtesting).
+    Окна идут последовательно друг за другом БЕЗ пересечений.
     
-        # ОСИ И ПОДПИСИ
-        "axes.titlesize": 12,
-        "axes.labelsize": 11,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "legend.fontsize": 10,
-        "legend.title_fontsize": 10,
+    Параметры:
+    -----------
+    model : object
+        Инициализированная модель (StatsForecast, MLForecast, NeuralForecast).
+    df : pd.DataFrame
+        Данные в формате Nixtla (unique_id, ds, y).
+    h : int
+        Горизонт прогнозирования (длина одного прогноза).
+    n_windows : int
+        Количество прогнозов (окон), которые нужно сделать в прошлом.
+    refit : bool
+        Если False (по умолчанию) - модель обучается один раз в начале.
+        Если True - модель переобучается перед каждым окном (медленно).
+        
+    Возвращает:
+    -----------
+    pd.DataFrame : Исторические прогнозы с колонкой 'step'.
+    """
     
-        # РАЗМЕР ФИГУРЫ (A4, отчёты)
-        # "figure.figsize": (6.5, 4.0),         # ~16.5 × 10 см
-        "figure.figsize": fig_size,         
-        "figure.dpi": 150,
-        "savefig.dpi": 300,
+    # Ключевое условие для НЕпересекающихся последовательных окон:
+    # Шаг сдвига (step_size) должен быть равен горизонту (h).
+    step_size = h
     
-        # СОХРАНЕНИЕ
-        "savefig.format": "pdf",
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.05,
+    # Общий размер тестового периода, который будет "нарезан" на окна
+    test_size = h * n_windows
     
-        # ЛИНИИ И ОСИ
-        "axes.linewidth": 1.0,
-        "xtick.major.width": 0.8,
-        "ytick.major.width": 0.8,
-        "xtick.minor.width": 0.6,
-        "ytick.minor.width": 0.6,
-    
-        "lines.linewidth": 1.5,
-        "patch.linewidth": 1.0,
-    
-        # СЕТКА
-        "axes.grid": True,                   # ГОСТ: обычно без сетки
-        "axes.axisbelow": True,
-    
-        # TEX
-        "text.usetex": False,
-    })
+    print(f"Генерация прогнозов: h={h}, окон={n_windows}, test_size={test_size}")
 
-
+    # Запуск генерации (используем cross_validation как инструмент бэктестинга)
+    forecasts_df = model.cross_validation(
+        df=df,
+        h=h,
+        test_size=test_size,
+        step_size=step_size,
+        refit=refit
+    )
+    
+    # Добавляем номер шага прогноза (1, 2, ... h)
+    # ВАЖНО: группируем по unique_id И cutoff, чтобы шаги считались правильно для каждого ряда
+    forecasts_df['step'] = forecasts_df.groupby(['unique_id', 'cutoff']).cumcount() + 1
+    
+    return forecasts_df
+    
 def plot_series_v2(
     df: Optional[pd.DataFrame] = None,
     forecasts_df: Optional[pd.DataFrame] = None,

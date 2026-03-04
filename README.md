@@ -140,6 +140,9 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/USTCAGI/Awesome-Papers-Time-Series-Forecasting
 * https://chaos.phys.msu.ru/loskutov/PDF/Lectures_time_series_analysis.pdf
 * https://lib.ulstu.ru/venec/disk/2022/6.pdf
+* https://github.com/thuml/Large-Time-Series-Model
+* https://github.com/thuml/Time-Series-Library
+* 
 
 ## Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
