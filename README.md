@@ -142,7 +142,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://lib.ulstu.ru/venec/disk/2022/6.pdf
 * https://github.com/thuml/Large-Time-Series-Model
 * https://github.com/thuml/Time-Series-Library
-* 
+* https://github.com/SalesforceAIResearch/uni2ts
 
 ## Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
