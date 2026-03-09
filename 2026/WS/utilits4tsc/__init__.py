@@ -1,5 +1,5 @@
 # from jupyter_utilits import *
-from TSC_Nixtla_dump import *
+from .TSC_Nixtla_dump import *
 
 import os
 import re

@@ -236,7 +236,77 @@ def plot_series_v2(
         ax=axes[:n_plots],  # передаём только нужные оси
     )
 
+import pandas as pd
 
+import pandas as pd
+
+def fix_forecast_format(df, strip_suffixes=None):
+    """
+    Преобразует DataFrame: сбрасывает индекс, проверяет колонки,
+    и удаляет указанные суффиксы из названий колонок моделей.
+
+    Параметры:
+    -----------
+    df : pd.DataFrame
+        Исходный датафрейм с прогнозами.
+    strip_suffixes : list or str, optional
+        Суффикс или список суффиксов, которые нужно удалить из имен колонок.
+        Пример: strip_suffixes=['-median', '-mean'] или просто '-median'.
+    """
+    # Создаем копию, чтобы не менять исходный датафрейм
+    df_fixed = df.copy()
+    
+    # === 1. Работа с индексами ===
+    # Если unique_id является индексом, сбрасываем его
+    if 'unique_id' not in df_fixed.columns and 'unique_id' in df_fixed.index.names:
+        df_fixed = df_fixed.reset_index()
+    
+    # Сбрасываем индекс полностью, чтобы избежать дубликатов типа 'level_0'
+    df_fixed = df_fixed.reset_index(drop=True)
+    
+    # === 2. Проверка обязательных колонок ===
+    if 'ds' not in df_fixed.columns:
+        raise ValueError("Колонка 'ds' отсутствует в данных после преобразования.")
+    
+    # Приводим ds к datetime
+    df_fixed['ds'] = pd.to_datetime(df_fixed['ds'])
+    
+    # === 3. Удаление суффиксов (Новая логика) ===
+    if strip_suffixes:
+        # Если передана строка, превращаем в список
+        if isinstance(strip_suffixes, str):
+            strip_suffixes = [strip_suffixes]
+            
+        # Функция для очистки имени одной колонки
+        def clean_col_name(col_name):
+            # Не трогаем служебные колонки
+            if col_name in ['unique_id', 'ds', 'y', 'cutoff']:
+                return col_name
+            
+            # Удаляем суффиксы, если они есть в конце строки
+            for suffix in strip_suffixes:
+                if col_name.endswith(suffix):
+                    # Обрезаем суффикс
+                    return col_name[:-len(suffix)]
+            return col_name
+        
+        # Применяем переименование
+        df_fixed.columns = [clean_col_name(col) for col in df_fixed.columns]
+        
+        # Предупреждение, если появились дубликаты (например, LSTM-median и LSTM-mean стали просто LSTM)
+        if df_fixed.columns.duplicated().any():
+            print("Внимание! После удаления суффиксов появились дубликаты колонок.")
+            # Можно оставить первые вхождения или вызвать ошибку, здесь оставляем первые
+            df_fixed = df_fixed.loc[:, ~df_fixed.columns.duplicated()]
+
+    # === 4. Упорядочивание колонок ===
+    # Сначала служебные, потом модели
+    cols_order = ['unique_id', 'ds', 'y', 'cutoff']
+    # Добавляем остальные колонки, которых нет в списке выше
+    final_cols = [c for c in cols_order if c in df_fixed.columns]
+    other_cols = [c for c in df_fixed.columns if c not in final_cols]
+    
+    return df_fixed[final_cols + other_cols]
  
 def evaluate_and_plot(df_train, df_test, forecasts_or_eval, metrics, levels=None, model_names=None, plot=True, modeh=True):
     """
