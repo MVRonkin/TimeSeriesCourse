@@ -114,7 +114,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [Блог введение в анализ временных рядов](https://www.dmitrymakarov.ru/intro/time-series/)
 * [Bianchi F M Time series analysis with Python](https://filippomb.github.io/python-time-series-handbook/notebooks/00/intro.html#) 
 [GitHub](https://github.com/FilippoMB/python-time-series-handbook /) -  простое Pythonic Way  изложение классического моделирования ВР
-* [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](/ https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) / [skforecast github tutorials](https://github.com/skforecast/skforecast/tree/master/docs/user_guides)- полезное и хорошее описание примеров предсказания ВР
+* [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) / [skforecast github tutorials](https://github.com/skforecast/skforecast/tree/master/docs/user_guides)- полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](/ https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [прекрасные туториалы skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) / [GitHub](https://github.com/skforecast/skforecast/tree/master/docs) / [Mirror](https://cienciadedatos.net/en/forecasting-python)
 * [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
