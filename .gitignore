@@ -269,3 +269,6 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
 2026/WS/.ipynb_checkpoints/01 - Визуализация и предварительная работа с данными -checkpoint.ipynb
 2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
+2026/WS/lightning_logs/version_7/hparams.yaml
+2026/WS/lightning_logs/version_7/events.out.tfevents.1773217472.mr32-316-ronkin.26008.29
+2026/WS/lightning_logs/version_6/events.out.tfevents.1773217470.mr32-316-ronkin.26008.28
