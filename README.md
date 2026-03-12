@@ -120,10 +120,12 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
 * [time-series-data](https://github.com/lukasmasuch/best-of-ml-python?tab=readme-ov-file#time-series-data)
+* 
   
 
 ##  Дополнительная литература 
 * [Forecasting and Analytics with the Augmented Dynamic Adaptive Model (ADAM)](https://openforecast.org/adam/)
+* [time_series_handbook](https://github.com/phdinds-aim/time_series_handbook)
 * https://clauswilke.com/dataviz/ 
 * https://github.com/M-3LAB/awesome-industrial-anomaly-detection
 * https://nicolarighetti.github.io/Time-Series-Analysis-With-R/
@@ -148,6 +150,11 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/SalesforceAIResearch/uni2ts
 * https://github.com/marcopeix/TimeSeriesForecastingUsingFoundationModels
 * https://github.com/qingsongedu/awesome-AI-for-time-series-papers
+* https://github.com/phylypo/TimeSeriesPrediction
+* https://github.com/xiyuanzh/time-series-papers
+* https://github.com/thuml/Large-Time-Series-Model
+* https://github.com/ajitsingh98/Time-Series-Analysis-and-Forecasting-with-Python/
+* https://github.com/DaoSword/Time-Series-Forecasting-and-Deep-Learning
 
 ## Какие то курсы
 * https://github.com/LinkedInLearning/python-for-time-series-forecasting-5246009/tree/main
@@ -207,3 +214,10 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://juanitorduz.github.io/tsb_numpyro/ https://juanitorduz.github.io/croston_numpyro/
 * https://github.com/valeman/Transformers_And_LLM_Are_What_You_Dont_Need
 * https://github.com/cuge1995/awesome-time-series
+
+## Про датасеты b Industrial-ML
+* https://github.com/jonathanwvd/awesome-industrial-datasets
+* https://github.com/nicolasj92/industrial-ml-datasets
+* https://github.com/YKatser/Industrial-ML
+* https://github.com/murovadarya/IndustrialML
+* https://github.com/makinarocks/awesome-industrial-machine-datasets
