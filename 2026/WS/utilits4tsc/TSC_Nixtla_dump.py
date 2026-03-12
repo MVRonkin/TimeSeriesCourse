@@ -236,9 +236,7 @@ def plot_series_v2(
         ax=axes[:n_plots],  # передаём только нужные оси
     )
 
-import pandas as pd
 
-import pandas as pd
 
 def fix_forecast_format(df, strip_suffixes=None):
     """
