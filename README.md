@@ -109,6 +109,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [Blog ODS TSA](https://habr.com/ru/companies/ods/articles/327242/), [GitHub Ru](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_russian/topic09_time_series), [GitHub En](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_english/topic09_time_series)
 * [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
 * [Machine Learning for Time Series (Master MVA)](https://www.laurentoudre.fr/ast.html)
+  
 
 ## Также рекомендуемая литература 
 * [Блог введение в анализ временных рядов](https://www.dmitrymakarov.ru/intro/time-series/)
@@ -117,6 +118,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * [skforecast](https://skforecast.org/0.19.1/examples/examples_english.html) и [примеры к skforecast](https://cienciadedatos.net/documentos/py27-time-series-forecasting-python-scikitlearn.html) / [skforecast github tutorials](https://github.com/skforecast/skforecast/tree/master/docs/user_guides)- полезное и хорошее описание примеров предсказания ВР
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
+* [time-series-data](https://github.com/lukasmasuch/best-of-ml-python?tab=readme-ov-file#time-series-data)
   
 
 ##  Дополнительная литература 
