@@ -191,7 +191,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
 * https://github.com/agpenas/tstrends
 * https://tom-doerr.github.io/repo_posts/2025/04/26/Nixtla-statsforecast.html
-
+* https://github.com/M-3LAB/awesome-industrial-anomaly-detection
 * https://github.com/thekimk/All-About-Time-Series-Analysis/
 
 ## Тутроиалы
