@@ -310,3 +310,34 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/.ipynb_checkpoints/02 - SKTime_Простые_Предсказания-checkpoint.ipynb
 2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
 2026/WS/.ipynb_checkpoints/de_hourly_power_and_weather-checkpoint.csv
+2026/WS/adtk/.ipynb_checkpoints/_base-checkpoint.py
+2026/WS/adtk/.ipynb_checkpoints/_detector_base-checkpoint.py
+2026/WS/adtk/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/__pycache__/_aggregator_base.cpython-311.pyc
+2026/WS/adtk/__pycache__/_base.cpython-311.pyc
+2026/WS/adtk/__pycache__/_detector_base.cpython-311.pyc
+2026/WS/adtk/__pycache__/_transformer_base.cpython-311.pyc
+2026/WS/adtk/__pycache__/_utils.cpython-311.pyc
+2026/WS/adtk/aggregator/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/aggregator/__pycache__/_aggregator.cpython-311.pyc
+2026/WS/adtk/data/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/data/__pycache__/_data.cpython-311.pyc
+2026/WS/adtk/detector/.ipynb_checkpoints/_detector_1d-checkpoint.py
+2026/WS/adtk/detector/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/detector/__pycache__/_detector_1d.cpython-311.pyc
+2026/WS/adtk/detector/__pycache__/_detector_hd.cpython-311.pyc
+2026/WS/adtk/metrics/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/metrics/__pycache__/_metrics.cpython-311.pyc
+2026/WS/adtk/pipe/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/pipe/__pycache__/_pipe.cpython-311.pyc
+2026/WS/adtk/transformer/__pycache__/__init__.cpython-311.pyc
+2026/WS/adtk/transformer/__pycache__/_transformer_1d.cpython-311.pyc
+2026/WS/adtk/transformer/__pycache__/_transformer_hd.cpython-311.pyc
+2026/WS/utilits4tsc/.ipynb_checkpoints/__init__-checkpoint.py
+2026/WS/utilits4tsc/.ipynb_checkpoints/plot_series-checkpoint.py
+2026/WS/utilits4tsc/.ipynb_checkpoints/rule_ad-checkpoint.py
+2026/WS/utilits4tsc/.ipynb_checkpoints/TSC_Nixtla_dump-checkpoint.py
+2026/WS/utilits4tsc/__pycache__/plot_series.cpython-311.pyc
+2026/WS/utilits4tsc/__pycache__/rule_ad.cpython-311.pyc
+2026/WS/utilits4tsc/.ipynb_checkpoints/__init__-checkpoint.py
+2026/WS/utilits4tsc/.ipynb_checkpoints/TSC_Nixtla_dump-checkpoint.py

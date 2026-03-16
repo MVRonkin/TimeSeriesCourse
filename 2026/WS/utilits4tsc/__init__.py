@@ -1,5 +1,7 @@
 # from jupyter_utilits import *
 from .TSC_Nixtla_dump import *
+from .rule_ad import *
+from .plot_series import *
 
 import os
 import re
