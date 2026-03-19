@@ -1,10 +1,14 @@
 # from jupyter_utilits import *
-from TSC_Nixtla_dump import *
+from .TSC_Nixtla_dump import *
+from .rule_ad import *
+from .plot_series import *
+from .prophet_adapter import *
 
 import os
 import re
 import nbformat
 from typing import Optional
+import matplotlib.pyplot as plt
 
 def get_notebook_name():
     """Пытается получить имя текущего ноутбука любыми способами."""
@@ -44,7 +48,50 @@ def get_notebook_name():
     
     return None
 
-
+def plt_style_GOST(fig_size = (12, 2.0)):
+    plt.rcParams.update({
+        # ШРИФТ
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "Times"],
+        "font.size": 11,                      # ГОСТ: 10–12 pt
+    
+        # ОСИ И ПОДПИСИ
+        "axes.titlesize": 12,
+        "axes.labelsize": 11,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "legend.fontsize": 10,
+        "legend.title_fontsize": 10,
+    
+        # РАЗМЕР ФИГУРЫ (A4, отчёты)
+        # "figure.figsize": (6.5, 4.0),         # ~16.5 × 10 см
+        "figure.figsize": fig_size,         
+        "figure.dpi": 150,
+        "savefig.dpi": 300,
+    
+        # СОХРАНЕНИЕ
+        "savefig.format": "pdf",
+        "savefig.bbox": "tight",
+        "savefig.pad_inches": 0.05,
+    
+        # ЛИНИИ И ОСИ
+        "axes.linewidth": 1.0,
+        "xtick.major.width": 0.8,
+        "ytick.major.width": 0.8,
+        "xtick.minor.width": 0.6,
+        "ytick.minor.width": 0.6,
+    
+        "lines.linewidth": 1.5,
+        "patch.linewidth": 1.0,
+    
+        # СЕТКА
+        "axes.grid": True,                   # ГОСТ: обычно без сетки
+        "axes.axisbelow": True,
+    
+        # TEX
+        "text.usetex": False,
+    })
+    
 def generate_toc(notebook_path: Optional[str] = None, 
                  title: str = '## Содержание', 
                  max_lvl: int = 2,
