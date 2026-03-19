@@ -347,3 +347,6 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/notebooks/Config.json
 2026/WS/notebooks/Demonstration-time-series.svg
 2026/WS/notebooks/Demonstration-time-series-detected-anomalies.svg
+2026/WS/notebooks/aeon/segmentation/.ipynb_checkpoints/hidalgo_segmentation-checkpoint.ipynb
+2026/WS/notebooks/aeon/anomaly_detection/.ipynb_checkpoints/anomaly_detection-checkpoint.ipynb
+.virtual_documents/2026/WS/08 - Other Tasks TSA.ipynb
