@@ -2,6 +2,7 @@
 from .TSC_Nixtla_dump import *
 from .rule_ad import *
 from .plot_series import *
+from .prophet_adapter import *
 
 import os
 import re
