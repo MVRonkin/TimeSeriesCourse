@@ -432,3 +432,36 @@ def evaluate_and_plot(df_train,
             models=model_names,
             palette='Set1',
         ))
+
+def extract_model_names(df, base_cols= ['unique_id', 'ds', 'y', 'cutoff']):
+    """
+    Извлекает уникальные названия моделей из колонок DataFrame.
+    Корректно удаляет суффиксы квантилей: -lo-95, -hi-0.5, _lo_90, _hi_0.25 и т.п.
+    
+    Параметры:
+    -----------
+    df : pd.DataFrame
+        Входной датафрейм
+    base_cols : list или None
+        Базовые колонки, которые не являются прогнозами моделей.
+        По умолчанию: ['unique_id', 'ds', 'y', 'cutoff']
+    
+    Возвращает:
+    ------------
+    list
+        Отсортированный список уникальных названий моделей
+    """
+    if base_cols is None:
+        base_cols = ['unique_id', 'ds', 'y', 'cutoff']
+    
+    base_set = set(base_cols)
+    cols = [c for c in df.columns if c not in base_set]
+    
+    # Исправленное регулярное выражение: поддержка целых и дробных чисел (95, 0.5, 0.25)
+    models = {
+        re.sub(r'[-_](lo|hi)[-_]\d+(\.\d+)?$', '', c)
+        for c in cols
+    }    
+    # Удаляем пустые строки и базовые колонки (на случай артефактов)
+    models = {m for m in models if m and m not in base_set}    
+    return sorted(models)

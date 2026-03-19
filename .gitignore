@@ -350,3 +350,9 @@ anaconda_projects/db/project_filebrowser.db
 2026/WS/notebooks/aeon/segmentation/.ipynb_checkpoints/hidalgo_segmentation-checkpoint.ipynb
 2026/WS/notebooks/aeon/anomaly_detection/.ipynb_checkpoints/anomaly_detection-checkpoint.ipynb
 .virtual_documents/2026/WS/08 - Other Tasks TSA.ipynb
+2026/WS/.ipynb_checkpoints/02 - StatForecast_Intro_TS_Analysis-checkpoint.ipynb
+2026/WS/__pycache__/prophet_adapter.cpython-311.pyc
+2026/WS/utilits4tsc/.ipynb_checkpoints/__init__-checkpoint.py
+2026/WS/utilits4tsc/.ipynb_checkpoints/prophet_adapter-checkpoint.py
+2026/WS/utilits4tsc/__pycache__/prophet_adapter.cpython-311.pyc
+2026/WS/utilits4tsc/.ipynb_checkpoints/__init__-checkpoint.py
