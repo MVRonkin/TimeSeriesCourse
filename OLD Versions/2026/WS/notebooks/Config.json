@@ -1,0 +1,38 @@
+{
+	"dataloaders": [
+		{
+			"type": "UCRLoader",
+			"path":"../data/UCR-time-series-anomaly-archive/001_UCR_Anomaly_DISTORTED1sddb40_35000_52000_52620.txt"
+		},
+		{
+			"type": "UCRLoader",
+			"path":"../data/UCR-time-series-anomaly-archive/002_UCR_Anomaly_DISTORTED2sddb40_35000_56600_56900.txt"
+		}
+	],
+	"metrics": [
+		{"type": "Precision"},
+		{"type": "AreaUnderPR"},
+		{"type": "AreaUnderROC"}
+	],
+	"thresholds": [
+		{"type": "TopN", "n": 20},
+		{"type": "FixedCutoff", "cutoff": 0.5}
+	],
+	"preprocessors": [
+		{"type": "Identity"},
+		{"type": "StandardScaler"},
+		{"type": "ChainedPreprocessor", "base_preprocessors":  [
+			{"type": "MovingAverage", "window_size": 10},
+			{"type": "StandardScaler"}
+		]},
+		{"type": "ChainedPreprocessor", "base_preprocessors":  [
+			{"type": "ExponentialMovingAverage", "alpha": 0.8},
+			{"type": "StandardScaler"}
+		]}
+	],
+	"detectors": [
+		{"type": "LocalOutlierFactor", "window_size": 50},
+		{"type": "IsolationForest", "window_size": 50}
+	],
+	"n_jobs": 4
+}
