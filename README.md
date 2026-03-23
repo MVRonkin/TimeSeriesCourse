@@ -184,8 +184,6 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/valeman/awesome-conformal-prediction
 * https://github.com/thuml/Time-Series-Library
 * https://github.com/ritvikmath/Time-Series-Analysis
-* 
-
 
 ## Инструменты обнаружения аномалий, перегиба, дрейфа новизны и тд
 * https://riverml.xyz / https://habr.com/ru/companies/glowbyte/articles/681772/
