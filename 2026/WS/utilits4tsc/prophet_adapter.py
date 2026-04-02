@@ -36,9 +36,9 @@ class TSProphet(_TS):
         self,
         freq: str = "H",
         growth: str = "linear",
-        yearly_seasonality: bool|int = False,
-        weekly_seasonality:bool|int = False,
-        daily_seasonality: bool|int = False,
+        yearly_seasonality = False, # : bool|int
+        weekly_seasonality = False, #: bool|int
+        daily_seasonality = False,# bool|int
         custom_seasonalities: Optional[List[Dict]] = None,
         seasonality_mode: str = "additive",
         seasonality_prior_scale: float = 10.0,
@@ -226,9 +226,9 @@ class ARIMAProphet(_TS):
         # #Prophet
         freq: str = "H",
         growth: str = "linear",
-        yearly_seasonality: bool | int = False,
-        weekly_seasonality: bool | int = False,
-        daily_seasonality: bool | int = False,
+        yearly_seasonality  = False, #: bool|int
+        weekly_seasonality = False, #: bool|int
+        daily_seasonality = False, #: bool|int
         custom_seasonalities: Optional[List[Dict]] = None,
         seasonality_mode: str = "additive",
         seasonality_prior_scale: float = 10.0,
