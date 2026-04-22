@@ -94,7 +94,9 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 | Лекция | Непараметрические методы АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/LEC/10%20%D0%9D%D0%B5%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5%20%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D1%8B%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20%D1%81%20%D0%92%D0%A0.pptx) |
 
 ## ИТОГОВЫЙ КОНТРОЛЬ
-
+*	Итоговое задание: https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md
+*	Соревнование (доп. баллы): https://www.kaggle.com/t/f6594d440d0e49acae193049334604b6
+   
 **Основной репозиторий курса:** [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md)
 
 
