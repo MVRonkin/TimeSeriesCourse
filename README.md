@@ -1,8 +1,10 @@
-# Материалы текущей версии курса представлены в репозитории 
-https://github.com/MVRonkin/TimeSeriesCourse/tree/main/Last 
+# Материалы 
 
+* текущей версии курса представлены [в репозитории Last](https://github.com/MVRonkin/TimeSeriesCourse/tree/main/Last)
+* [утилиты для курса](https://github.com/MVRonkin/utilits4tsc/tree/main)
+* [Задания для курса](https://github.com/MVRonkin/TimeSeriesCourse#%D0%B8%D1%82%D0%BE%D0%B3%D0%BE%D0%B2%D1%8B%D0%B9-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D1%8C)
 
-<details>
+<details><summary>Содержание курса</summary>
 Материалы состоят 
 
 1.	из лекционных презентаций по следующим темам <ul>
