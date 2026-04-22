@@ -1,6 +1,7 @@
 # Материалы текущей версии курса представлены в репозитории 
 https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026 
 
+
 <details>
 Материалы состоят 
 
@@ -34,7 +35,8 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 <li>2.9.	Решение задач классификации ВР (доп. Раздел).</li>
 </ul>
 
-3.	итогового задания https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md
+3.	Итоговое задание: https://github.com/MVRonkin/TimeSeriesCourse/blob/main/2026/README.md
+4.	Соревнование (доп. баллы): https://www.kaggle.com/t/f6594d440d0e49acae193049334604b6 
 </details>
 
 # Анализ временных рядов
@@ -211,7 +213,7 @@ https://github.com/MVRonkin/TimeSeriesCourse/tree/main/2026
 * https://github.com/valeman/Transformers_And_LLM_Are_What_You_Dont_Need
 * https://github.com/cuge1995/awesome-time-series
 
-## Про датасеты b Industrial-ML
+## Про датасеты  Industrial-ML
 * https://github.com/jonathanwvd/awesome-industrial-datasets
 * https://github.com/nicolasj92/industrial-ml-datasets
 * https://github.com/YKatser/Industrial-ML
