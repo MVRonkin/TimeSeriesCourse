@@ -72,7 +72,6 @@
 |---------|------|-----------|
 | Лекция 5 - 2/2 | Методы машинного обучения для предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-2_TSML.pptx)|
 | Практика 5 | ML предсказание | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecastt.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecast.ipynb) |
-
 | Лекция 6 - 1/2 | Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-1_TSReliablity.pptx) |
 | Лекция 6 - 2/2 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-2_TSAnomaly.pptx) |
 | Практика 6 | ВР Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast.ipynb) |
