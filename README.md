@@ -60,7 +60,6 @@
 | Лекция 3 - 2/2 | Метрики АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/03-2_TSMetrics.pptx) | [Точечные метрики](https://otexts.com/fpppy/nbs/05-toolbox.html#sec-accuracy) |
 | Практика 2 -1/2 | Базовые методы предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/02-1-StatForecast_Intro.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/02-1-StatForecast_Intro.ipynb) | Statsforecast |
 | Практика 2 -2/2 | Базовые методы предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/02-2-Regression_Based.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/02-2-Regression_Based.ipynb) | Statsforecast |
-
 | Лекция 4 - 1/2 | Статистические свойства ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/04-1_TSStatistic.pptx) |[Стационарность, АКФ](https://otexts.com/fpppy/nbs/04-features.html) |
 | Лекция 4 - 2/2 | ARIMA | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/04-2_ARIMA.pptx) |  [ARIMA](https://otexts.com/fpppy/nbs/09-arima.html) |
 | Лекция 5 - 1/2 | Анализ остатков предсказания | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-1_ResidualDiagnostics.pptx) | [Residual](https://otexts.com/fpppy/nbs/05-toolbox.html#sec-diagnostics) |
