@@ -72,8 +72,8 @@
 |9| Лекция 5 - 2/2 | Методы машинного обучения для предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-2_TSML.pptx)|
 |9| Практика 5 | ML предсказание | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecastt.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecast.ipynb) |
 |10| Лекция 6 - 1/2 | Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-1_TSReliablity.pptx) |
-|10| Лекция 6 - 2/2 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-2_TSAnomaly.pptx) |
 |11| Практика 6 | ВР Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast.ipynb) |
+|12| Лекция 6 - 2/2 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-2_TSAnomaly.pptx) |
 |12| Практика 7 | Обнаружение аномалий и другие задачи АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/08-AnomalyTSA.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/08-AnomalyTSA.ipynb) |
 
 ### Модуль 4 - Использование искусственных нейронных сетей глубокого обучения в задачах анализа временных рядов
