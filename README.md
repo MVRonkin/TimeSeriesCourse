@@ -44,6 +44,9 @@
 # Анализ временных рядов
 
 ## Содержение курса
+
+### Модуль 1 - Введение в предмет 
+
 |№| Занятие | Тема | Материалы | Основное |
 |--|---------|------|-----------|-----------|
 |1| Лекция 1 - 1/2 | Введение в АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/01-1_Intro.pptx) | [Понятие ВР](https://otexts.com/fpppy/nbs/01-intro.html) |
@@ -113,6 +116,7 @@
 * [Blog ODS TSA](https://habr.com/ru/companies/ods/articles/327242/), [GitHub Ru](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_russian/topic09_time_series), [GitHub En](https://github.com/Yorko/mlcourse.ai/tree/main/jupyter_english/topic09_time_series)
 * [ШАД Ml handbook Chs 10.2-10.5](https://education.yandex.ru/handbook/ml/article/vremennye-ryady)
 * [Machine Learning for Time Series (Master MVA)](https://www.laurentoudre.fr/ast.html)
+* [Курс Машинного обучения для обработки сигналов и временных рядов от Дмитрия Bykhovsky](https://bykhov.github.io/data-driven/)
 <!-- * [Материалы книги advanced-forecasting-python](https://github.com/Apress/advanced-forecasting-python/tree/main)-->
   
 
