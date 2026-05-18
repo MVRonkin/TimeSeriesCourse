@@ -67,22 +67,17 @@
 |7| Практика 3 | ARIMA | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/03-ARIMA.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/03-ARIMA.ipynb) | [AutoARIMA](https://otexts.com/fpppy/nbs/09-arima.html)|
 |8| Лекция 5 - 1/2 | Анализ остатков предсказания | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-1_ResidualDiagnostics.pptx) | [Residual](https://otexts.com/fpppy/nbs/05-toolbox.html#sec-diagnostics) |
 |8| Практика 4 | Диагностика ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/04-TSDiagnostics.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/04-TSDiagnostics.ipynb) | |
+|10| Лекция 5 - 2/2 | Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-1_TSReliablity.pptx) |
+|11| Практика 5 | ВР Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast.ipynb) |
 
 ### Модуль 3 - Использование машинного обучения в задачах анализа временных рядов
 
 |№| Занятие | Тема | Материалы |
 |-|---------|------|-----------|
-|9| Лекция 5 - 2/2 | Методы машинного обучения для предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-2_TSML.pptx)|
-|9| Практика 5 | ML предсказание | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecastt.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecast.ipynb) |
-|10| Лекция 6 - 1/2 | Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-1_TSReliablity.pptx) |
-|11| Практика 6 | ВР Оценка надежности предсказаний ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/05-AdvancedForecast.ipynb) |
-|12| Лекция 6 - 2/2 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-2_TSAnomaly.pptx) |
+|9| Лекция 5 - 1/2 | Методы машинного обучения для предсказания ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/05-2_TSML.pptx)|
+|9| Практика 6 | ML предсказание | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecastt.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/06-MLForecast.ipynb) |
+|12| Лекция 5 - 2/2 | Обнаружение аномалий во ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/06-2_TSAnomaly.pptx) |
 |12| Практика 7 | Обнаружение аномалий и другие задачи АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/08-AnomalyTSA.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/08-AnomalyTSA.ipynb) |
-
-### Модуль 4 - Использование искусственных нейронных сетей глубокого обучения в задачах анализа временных рядов
-
-|№| Занятие | Тема | Материалы |
-|-|---------|------|-----------|
 |13| Лекция 7 - 1/2 | Полносвязные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-1_MLP.pptx) |
 |13| Лекция 7 - 2/2 | Рекуррентные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-2_RNN.pptx) |
 |14| Лекция 8 | Архитектуры - трансфомеры | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-3_Transformers.pptx) |
