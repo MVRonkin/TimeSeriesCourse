@@ -73,4 +73,11 @@
 </ul></li>
 </ul>
 
-> Если делается отдельный отчет, то сдавать нужно в HTML или  хотя-бы ссылкой на колаб.
+> Если делается отдельный отчет, то сдавать нужно в HTML или  хотя-бы ссылкой на Colab.
+> Также можно выложить в виде <code>README</code>, как сказано выше.
+
+
+### Где брать набор данных
+* Обращаем еще раз внимание, что предпочтительно найти свой набор данынх. 
+* Однако, можно также взять набор данных и примеров. [Примеры можно найти тут](https://github.com/MVRonkin/TimeSeriesCourse/tree/main/OLD%20Versions/2026/datasets)
+* Пример с рассмтариваемым на практиках набором [данных можно также найти в датасетах](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/OLD%20Versions/2026/datasets/OPDS/read_the_data.ipynb) или [ЛР1](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/01-EDA_VIS.ipynb)
