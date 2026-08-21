@@ -50,7 +50,7 @@
 |№| Занятие | Тема | Материалы | Основное |
 |--|---------|------|-----------|-----------|
 |1| Лекция 1 - 1/2 | Введение в АВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/01-1_Intro.pptx) | [Понятие ВР](https://otexts.com/fpppy/nbs/01-intro.html) |
-|1| Лекция 1 - 2/2 | Классификация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/01-2_Benchmarking.pptx) | - |
+|1| Лекция 1 - 2/2 | Типы ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/01-2_Benchmarking.pptx) | - |
 |2| Лекция 2 - 1/2 | Модели ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/02-1_TSModeling.pptx) | [Тренд, сезонность, остаток](https://otexts.com/fpppy/nbs/02-graphics.html) |
 |2| Лекция 2 - 2/2 | Декомпозиция ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/02-2_Decomposition.pptx) | [разложение ВР](https://otexts.com/fpppy/nbs/03-decomposition.html)|
 |3| Практика 1 | EDA и визуализация ВР | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/01-EDA_VIS.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/01-EDA_VIS.ipynb) | [EDA](https://otexts.com/fpppy/nbs/02-graphics.html) |
@@ -81,7 +81,7 @@
 |13| Лекция 7 - 1/2 | Полносвязные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-1_MLP.pptx) |
 |13| Лекция 7 - 2/2 | Рекуррентные архитектуры нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-2_RNN.pptx) |
 |14| Лекция 8 | Архитектуры - трансфомеры | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/LEC/07-3_Transformers.pptx) |
-|15| Практика 7 | Предсказания с использованием нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/07-DL_TSA.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/07-DL_TSA.ipynb) |
+|15| Практика 8 | Предсказания с использованием нейронных сетей | [GitHub](https://github.com/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/07-DL_TSA.ipynb) / [Colab](https://colab.research.google.com/github/MVRonkin/TimeSeriesCourse/blob/main/Last/WS/07-DL_TSA.ipynb) |
 
 ### Дополнительные темы
 
