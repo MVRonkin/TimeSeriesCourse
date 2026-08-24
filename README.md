@@ -123,7 +123,7 @@
 * [statsmodels.tsa](https://www.statsmodels.org/stable/tsa.html) и [user guide](https://www.statsmodels.org/stable/user-guide.html#time-series-analysis) - классический фреймворк моделирования ВР
 * [Простая статья по TSA](https://ivan-shamaev.ru/time-series-analysis-forecasting-and-models-python-libraries/)
 * [time-series-data](https://github.com/lukasmasuch/best-of-ml-python?tab=readme-ov-file#time-series-data)
-* 
+* [from Var to AI Forecasting](https://arxiv.org/pdf/2607.14279)
   
 
 ##  Дополнительная литература 
