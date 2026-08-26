@@ -194,6 +194,7 @@
 * https://tom-doerr.github.io/repo_posts/2025/04/26/Nixtla-statsforecast.html
 * https://github.com/M-3LAB/awesome-industrial-anomaly-detection
 * https://github.com/thekimk/All-About-Time-Series-Analysis/
+* https://docs.pypots.com/en/latest/index.html
 
 ## Тутроиалы
 * https://github.com/aeon-toolkit/aeon-tutorials/tree/main
